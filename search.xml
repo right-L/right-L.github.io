@@ -3,19 +3,12 @@
   <entry>
     <title>阅读指南</title>
     <url>/2024/03/02/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <content><![CDATA[<p><strong>欢迎各位来到我的<code>BLOG~</code></strong></p>
+<blockquote>
+<p>​	博客主要用于写个人的学习笔记以及生活杂七杂八的记录。</p>
+<p>​	初心是希望能够<strong>记录自己不断进步的足迹</strong>以及<strong>生活美好点滴</strong>！</p>
+<p>​	如博客中有文章有<strong>疑问</strong>or<strong>错误</strong>可以点击首页的——“联系我📫”，将您想对我说的发送至邮箱~</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>杂七杂八</category>
@@ -159,15 +152,5 @@
       <categories>
         <category>学习笔记</category>
       </categories>
-  </entry>
-  <entry>
-    <title>文章测试</title>
-    <url>/2024/03/03/%E6%96%87%E7%AB%A0%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意事项~</p>
-</blockquote>
-]]></content>
   </entry>
 </search>
