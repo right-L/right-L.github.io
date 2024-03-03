@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>阅读指南</title>
+    <url>/2024/03/02/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>杂七杂八</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SpringBoot</title>
+    <url>/2024/03/03/SpringBoot/</url>
+    <content><![CDATA[<h1 id="springboot的第一个helloword"><a href="#springboot的第一个helloword" class="headerlink" title="springboot的第一个helloword"></a>springboot的第一个helloword</h1><h2 id="快速生成一个项目"><a href="#快速生成一个项目" class="headerlink" title="快速生成一个项目"></a>快速生成一个项目</h2><h3 id="可以在spring官网上用以下方式"><a href="#可以在spring官网上用以下方式" class="headerlink" title="可以在spring官网上用以下方式"></a>可以在spring官网上用以下方式</h3><p><img src="/assets/1698196929347.png" alt="69819692934" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>这里添加了<strong>springweb</strong>的依赖，生成之后文件夹会有以下：</p>
+<p><img src="/assets/1698196955000.png" alt="69819695500" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="可以直接在idea中生成一个springboot项目（推荐）"><a href="#可以直接在idea中生成一个springboot项目（推荐）" class="headerlink" title="可以直接在idea中生成一个springboot项目（推荐）"></a>可以直接在idea中生成一个springboot项目（推荐）</h3><p> <img src="/assets/1698197100320.png" alt="69819710032" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698197150100.png" alt="69819715010" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>启动之后会显示以下<strong>（成功）</strong>：</p>
+<p><img src="/assets/1698197193501.png" alt="69819719350" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>浏览器访问本地8080：</p>
+<p><img src="/assets/1698197213950.png" alt="69819721395" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="启动后下面有一行报错"><a href="#启动后下面有一行报错" class="headerlink" title="启动后下面有一行报错"></a>启动后下面有一行报错</h3><blockquote>
+<p>报错显示：An incompatible version [1.2.23] of the Apache Tomcat Native library is installed</p>
+<p>原因：似乎是因为tomcat的版本问题</p>
+<p>解决方案参考：<a href="https://blog.csdn.net/rej177/article/details/128223813">https://blog.csdn.net/rej177/article/details/128223813</a></p>
+</blockquote>
+<p> <img src="/assets/1698197394956.png" alt="69819739495" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="编写hellowrod"><a href="#编写hellowrod" class="headerlink" title="编写hellowrod"></a>编写hellowrod</h3><p><img src="/assets/1698197446208.png" alt="69819744620" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698197454255.png" alt="69819745425" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<blockquote>
+<p>回顾一下spring里的@RequesMapping(&#x2F;hello)，表示当前用户<strong>访问&#x2F;hello路径</strong>的时候将会调用它所注释的方法。</p>
+<p>其中它可以被更具体的注释代替，如下：</p>
+<p>@GetMapping()表示处理get请求</p>
+<p>@PostMapping()表示处理post请求</p>
+<p>@PutMapping()表示处理put请求</p>
+<p>@DeleteMapping()表示处理delete请求</p>
+</blockquote>
+<h2 id="进行项目的打包"><a href="#进行项目的打包" class="headerlink" title="进行项目的打包"></a>进行项目的打包</h2><p> <img src="/assets/1698197551373.png" alt="69819755137" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<blockquote>
+<p>原先有遇见过报错，后面找到原因是因为配置文件中有中文，出现了<strong>乱码</strong>，解决方案如下（但是后面推荐用yaml文件作为配置文件，比较方便)</p>
+</blockquote>
+<p><img src="/assets/1698197741285.png" alt="69819774128" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>打包好之后可以看到一个jar文件：</p>
+<p> <img src="/assets/1698198251755.png" alt="69819825175" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>打开shell执行以下即可运行（<strong>ctrl+c</strong>停止）：</p>
+<p><img src="/assets/1698198276653.png" alt="69819827665" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="更改启动后的画面"><a href="#更改启动后的画面" class="headerlink" title="更改启动后的画面"></a>更改启动后的画面</h2><p> <img src="/assets/1698198408847.png" alt="69819840884" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698198429788.png" alt="69819842978" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<blockquote>
+<p>可以在网站上找：<a href="https://www.bootschool.net/ascii">https://www.bootschool.net/ascii</a></p>
+<p>修改<strong>resources&#x2F;banner.txt</strong>文件即可</p>
+</blockquote>
+<h1 id="配置文件的基本使用"><a href="#配置文件的基本使用" class="headerlink" title="配置文件的基本使用"></a>配置文件的基本使用</h1><h2 id="两种配置文件的格式"><a href="#两种配置文件的格式" class="headerlink" title="两种配置文件的格式"></a>两种配置文件的格式</h2><h3 id="application-properties"><a href="#application-properties" class="headerlink" title="application.properties"></a>application.properties</h3><p>key&#x3D;value</p>
+<h3 id="application-yaml"><a href="#application-yaml" class="headerlink" title="application.yaml"></a>application.yaml</h3><p>key:空格 value</p>
+<h2 id="yaml的好处"><a href="#yaml的好处" class="headerlink" title="yaml的好处"></a>yaml的好处</h2><p>可以存许多不同类型的数值</p>
+<p> <img src="/assets/1698199063469.png" alt="69819906346" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">person:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rigthl</span></span><br><span class="line">  <span class="attr">age:</span> <span class="number">21</span></span><br><span class="line">  <span class="attr">happy:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">birth:</span> <span class="number">2002</span><span class="string">/11/14</span></span><br><span class="line">  <span class="attr">maps:</span> &#123;<span class="attr">k1:</span> <span class="string">v1</span>,<span class="attr">k2:</span> <span class="string">v2</span>&#125;</span><br><span class="line">  <span class="attr">lists:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">study</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">java</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span></span><br><span class="line">  <span class="attr">dog:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">狗崽</span></span><br><span class="line">    <span class="attr">age:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">dog:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">狗崽</span></span><br><span class="line">  <span class="attr">age:</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用yaml进行数据注入"><a href="#使用yaml进行数据注入" class="headerlink" title="使用yaml进行数据注入"></a>使用yaml进行数据注入</h2><h3 id="pojo"><a href="#pojo" class="headerlink" title="pojo"></a>pojo</h3><h4 id="dog"><a href="#dog" class="headerlink" title="dog"></a>dog</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rightl.lab2.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Repository;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;dog&quot;)</span></span><br><span class="line"><span class="comment">//@Component的意思是标识一个类为Spring容器管理的组件，会被spring自动扫描并且注册为bean</span></span><br><span class="line"><span class="comment">//为了更好的区别还有以下：</span></span><br><span class="line"><span class="comment">//@Service: 用于标识服务层的组件。</span></span><br><span class="line"><span class="comment">//@Repository: 用于标识数据访问层的组件，通常用于DAO类。</span></span><br><span class="line"><span class="comment">//@Controller: 用于标识控制器层的组件，通常用于Spring MVC中的Controller类。</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line"><span class="comment">//    @Value(&quot;狗崽&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"><span class="comment">//    @Value(&quot;2&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String age;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Dog</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Dog</span><span class="params">(String name, String age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(String age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Dog&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&#x27;&quot;</span> + age + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="person"><a href="#person" class="headerlink" title="person"></a>person</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rightl.lab2.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.annotation.Validated;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;person&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> Boolean happy;</span><br><span class="line">    <span class="keyword">private</span> Date birth;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String,Object&gt; maps;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; lists;</span><br><span class="line">    <span class="keyword">private</span> Dog dog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(String name, Integer age, Boolean happy, Date birth, Map&lt;String, Object&gt; maps, List&lt;Object&gt; lists, Dog dog)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.happy = happy;</span><br><span class="line">        <span class="built_in">this</span>.birth = birth;</span><br><span class="line">        <span class="built_in">this</span>.maps = maps;</span><br><span class="line">        <span class="built_in">this</span>.lists = lists;</span><br><span class="line">        <span class="built_in">this</span>.dog = dog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(Integer age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">getHappy</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> happy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setHappy</span><span class="params">(Boolean happy)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.happy = happy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">getBirth</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> birth;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBirth</span><span class="params">(Date birth)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birth = birth;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title function_">getMaps</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> maps;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setMaps</span><span class="params">(Map&lt;String, Object&gt; maps)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.maps = maps;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;Object&gt; <span class="title function_">getLists</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> lists;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setLists</span><span class="params">(List&lt;Object&gt; lists)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.lists = lists;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Dog <span class="title function_">getDog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> dog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setDog</span><span class="params">(Dog dog)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.dog = dog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Person&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, happy=&quot;</span> + happy +</span><br><span class="line">                <span class="string">&quot;, birth=&quot;</span> + birth +</span><br><span class="line">                <span class="string">&quot;, maps=&quot;</span> + maps +</span><br><span class="line">                <span class="string">&quot;, lists=&quot;</span> + lists +</span><br><span class="line">                <span class="string">&quot;, dog=&quot;</span> + dog +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="test"><a href="#test" class="headerlink" title="test"></a>test</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rightl.lab2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.rightl.lab2.pojo.Dog;</span><br><span class="line"><span class="keyword">import</span> com.rightl.lab2.pojo.Person;</span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.Test;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Lab2ApplicationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line"><span class="comment">//    @Autowired注解用于自动装配Spring Bean。</span></span><br><span class="line"><span class="comment">//    当一个类中的字段、构造函数或方法被@Autowired注解标记时，Spring容器会自动在容器中查找匹配的Bean，</span></span><br><span class="line"><span class="comment">//    并将其注入到标记了@Autowired的地方。</span></span><br><span class="line"><span class="comment">//    @Qualifier注解与@Autowired一起使用，用于指定具体的Bean名称，以解决多个同类型的Bean存在时的歧义性问题。</span></span><br><span class="line"><span class="comment">//    如果一个接口有多个实现类，或者一个类有多个子类，通过@Qualifier可以明确指定要注入的Bean。</span></span><br><span class="line">    <span class="keyword">private</span> Dog dog;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Person person;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">contextLoads</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(dog);</span><br><span class="line">        System.out.println(person);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Dog&#123;name=&#x27;狗崽&#x27;, age=&#x27;2&#x27;&#125;</span><br><span class="line">Person&#123;name=&#x27;rigthl&#x27;, age=21, happy=true, birth=Thu Nov 14 00:00:00 CST 2002, maps=&#123;k1=v1, k2=v2&#125;, lists=[study, java, python], dog=Dog&#123;name=&#x27;狗崽&#x27;, age=&#x27;2&#x27;&#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用properties进行数据注入"><a href="#使用properties进行数据注入" class="headerlink" title="使用properties进行数据注入"></a>使用properties进行数据注入</h2><p>（不推荐，麻烦）</p>
+<p> <img src="/assets/1698199256293.png" alt="69819925629" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="配置文件的其他注意事项"><a href="#配置文件的其他注意事项" class="headerlink" title="配置文件的其他注意事项"></a>配置文件的其他注意事项</h2><h3 id="位置"><a href="#位置" class="headerlink" title="位置"></a>位置</h3><p> <img src="/assets/1698289890102.png" alt="69828989010" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以写在以上的四个位置，有<strong>优先级</strong>：</p>
+<ul>
+<li>file:.&#x2F;config&#x2F;</li>
+<li>file:.&#x2F;</li>
+<li>classpath:&#x2F;config&#x2F;</li>
+<li>classpath:&#x2F;</li>
+</ul>
+<h3 id="yaml文件可以使用—用来分割不同的环境配置"><a href="#yaml文件可以使用—用来分割不同的环境配置" class="headerlink" title="yaml文件可以使用—用来分割不同的环境配置"></a>yaml文件可以使用—用来分割不同的环境配置</h3><blockquote>
+<p>默认最后一个优先级最高(此时的端口号是8081)</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果给加上以下代码(给配置文件起个名字，新版本跟之前的不一样)，端口就是8080</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">	<span class="attr">config:</span></span><br><span class="line">		<span class="attr">activate:</span></span><br><span class="line">			<span class="attr">on-profile:</span> <span class="string">tests</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以使用以下代码，用来调用其想要的配置文件,端口就是8081</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">tests</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">config:</span></span><br><span class="line">    <span class="attr">activate:</span></span><br><span class="line">      <span class="attr">on-profile:</span> <span class="string">tests</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="自动装配原理"><a href="#自动装配原理" class="headerlink" title="自动装配原理"></a>自动装配原理</h1><ul>
+<li>springboot启动会加载大量的自动配置类</li>
+<li>我们看需要的功能有没有在springboot中默认写好的自动配置类中</li>
+<li>看自动配置类中到底配置了哪些组件</li>
+<li>给容器自动配置类添加组件的时候，会从properties类中获取某些属性，在配置文件中指定这些属性的值：<ul>
+<li>xxxAutoConfigurartion:自动配置类</li>
+<li>xxxProperties:封装配置文件中相关属性</li>
+</ul>
+</li>
+</ul>
+<p>可以在yaml文件中写以下，运行的时候可以看到哪些自动配置类<strong>是否生效</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">debug:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="静态资源"><a href="#静态资源" class="headerlink" title="静态资源"></a>静态资源</h1><h2 id="webjars"><a href="#webjars" class="headerlink" title="webjars"></a>webjars</h2><blockquote>
+<p>网址：<a href="https://www.webjars.org/">https://www.webjars.org/</a></p>
+<p>可以在里面找到想要的，例如我要jquery的maven</p>
+</blockquote>
+<p> <img src="/assets/1698291489338.png" alt="69829148933" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>那么在依赖里面加入上面那段即可</p>
+<h2 id="静态资源默认的位置"><a href="#静态资源默认的位置" class="headerlink" title="静态资源默认的位置"></a>静态资源默认的位置</h2><ul>
+<li><p>webjars</p>
+<p>访问：locahost:8080&#x2F;webjars&#x2F;</p>
+</li>
+</ul>
+<p> <img src="/assets/1698291651596.png" alt="69829165159" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li>pubilc</li>
+<li>static</li>
+<li>resources</li>
+</ul>
+<p> <img src="/assets/1698291725996.png" alt="69829172599" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>​	访问：localhost:&#x2F;8080&#x2F;</p>
+<p> <img src="/assets/1698291824944.png" alt="69829182494" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>resource&gt;static（默认）&gt;public</p>
+<blockquote>
+<p>对于静态资源的位置也可以在yaml配置文件中进行修改，但是一般不建议修改！</p>
+</blockquote>
+<h2 id="首页"><a href="#首页" class="headerlink" title="首页"></a>首页</h2><p>这里把首页直接放在static中，并且命名为index.html，在浏览器中直接访问8080即可</p>
+<blockquote>
+<p>idea中，如果想要快速把html格式生成，使用快捷键**!+tab**</p>
+</blockquote>
+<p> <img src="/assets/1698292122038.png" alt="69829212203" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="ico"><a href="#ico" class="headerlink" title="ico"></a>ico</h2><blockquote>
+<p>截至现在暂时最新的使用方法是直接讲ico文件命名为favicon，放入static中即可，springboot会自动识别并且用作网站图标。</p>
+<p>其他方式也有：</p>
+<p>如果你放在了不同的路径，在yaml文件中配置一下即可</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">	<span class="attr">mvc:</span></span><br><span class="line">		<span class="attr">favicon:</span></span><br><span class="line">			<span class="attr">static-path-pattern:</span> <span class="string">/path/xxxxx</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><img src="/assets/1698292427172.png" alt="69829242717" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698292449293.png" alt="69829244929" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+  </entry>
+</search>
