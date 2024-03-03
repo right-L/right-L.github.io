@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="springboot的第一个helloword快速生成一个项目可以在spring官网上用以下方式 这里添加了springweb的依赖，生成之后文件夹会有以下：  可以直接在idea中生成一个springboot项目（推荐）    启动之后会显示以下（成功）：  浏览器访问本地8080：  启动后下面有一行报错 报错显示：An incompatible version [1.2.23] of the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot">
+<meta property="og:url" content="http://example.com/2024/03/03/SpringBoot/index.html">
+<meta property="og:site_name" content="沈池の博客">
+<meta property="og:description" content="springboot的第一个helloword快速生成一个项目可以在spring官网上用以下方式 这里添加了springweb的依赖，生成之后文件夹会有以下：  可以直接在idea中生成一个springboot项目（推荐）    启动之后会显示以下（成功）：  浏览器访问本地8080：  启动后下面有一行报错 报错显示：An incompatible version [1.2.23] of the">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="og:image" content="http://example.com/img/404.jpg">
+<meta property="article:published_time" content="2024-03-02T16:22:47.753Z">
+<meta property="article:modified_time" content="2024-03-03T09:19:18.926Z">
+<meta property="article:author" content="Right_L">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/404.jpg">
+
+
+<title >SpringBoot</title>
+
+<!-- Favicon -->
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"example.com","author":"Right_L","root":"/","typed_text":["戒骄戒躁"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"log.svg","icon16":"log.svg","icon32":"log.svg","appleTouchIcon":"log.svg","webmanifest":null,"visibilitychange":true,"hidden":"failure.ico","showText":"回来噜","hideText":"离开噜"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":true},"live_time":{"start_time":"03/2/2024 17:00:00","prefix":"BLOG已运行 undefined 天"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-03 17:19:18"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/log.svg">
+    
+    
+        <div class="trm-logo-text">
+            Right<span>L</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            SpringBoot
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/03
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:22
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Right_L
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="springboot的第一个helloword"><a href="#springboot的第一个helloword" class="headerlink" title="springboot的第一个helloword"></a>springboot的第一个helloword</h1><h2 id="快速生成一个项目"><a href="#快速生成一个项目" class="headerlink" title="快速生成一个项目"></a>快速生成一个项目</h2><h3 id="可以在spring官网上用以下方式"><a href="#可以在spring官网上用以下方式" class="headerlink" title="可以在spring官网上用以下方式"></a>可以在spring官网上用以下方式</h3><p><img src="/assets/1698196929347.png" alt="69819692934" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>这里添加了<strong>springweb</strong>的依赖，生成之后文件夹会有以下：</p>
+<p><img src="/assets/1698196955000.png" alt="69819695500" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="可以直接在idea中生成一个springboot项目（推荐）"><a href="#可以直接在idea中生成一个springboot项目（推荐）" class="headerlink" title="可以直接在idea中生成一个springboot项目（推荐）"></a>可以直接在idea中生成一个springboot项目（推荐）</h3><p> <img src="/assets/1698197100320.png" alt="69819710032" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698197150100.png" alt="69819715010" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>启动之后会显示以下<strong>（成功）</strong>：</p>
+<p><img src="/assets/1698197193501.png" alt="69819719350" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>浏览器访问本地8080：</p>
+<p><img src="/assets/1698197213950.png" alt="69819721395" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="启动后下面有一行报错"><a href="#启动后下面有一行报错" class="headerlink" title="启动后下面有一行报错"></a>启动后下面有一行报错</h3><blockquote>
+<p>报错显示：An incompatible version [1.2.23] of the Apache Tomcat Native library is installed</p>
+<p>原因：似乎是因为tomcat的版本问题</p>
+<p>解决方案参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/rej177/article/details/128223813">https://blog.csdn.net/rej177/article/details/128223813</a></p>
+</blockquote>
+<p> <img src="/assets/1698197394956.png" alt="69819739495" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="编写hellowrod"><a href="#编写hellowrod" class="headerlink" title="编写hellowrod"></a>编写hellowrod</h3><p><img src="/assets/1698197446208.png" alt="69819744620" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698197454255.png" alt="69819745425" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<blockquote>
+<p>回顾一下spring里的@RequesMapping(&#x2F;hello)，表示当前用户<strong>访问&#x2F;hello路径</strong>的时候将会调用它所注释的方法。</p>
+<p>其中它可以被更具体的注释代替，如下：</p>
+<p>@GetMapping()表示处理get请求</p>
+<p>@PostMapping()表示处理post请求</p>
+<p>@PutMapping()表示处理put请求</p>
+<p>@DeleteMapping()表示处理delete请求</p>
+</blockquote>
+<h2 id="进行项目的打包"><a href="#进行项目的打包" class="headerlink" title="进行项目的打包"></a>进行项目的打包</h2><p> <img src="/assets/1698197551373.png" alt="69819755137" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<blockquote>
+<p>原先有遇见过报错，后面找到原因是因为配置文件中有中文，出现了<strong>乱码</strong>，解决方案如下（但是后面推荐用yaml文件作为配置文件，比较方便)</p>
+</blockquote>
+<p><img src="/assets/1698197741285.png" alt="69819774128" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>打包好之后可以看到一个jar文件：</p>
+<p> <img src="/assets/1698198251755.png" alt="69819825175" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>打开shell执行以下即可运行（<strong>ctrl+c</strong>停止）：</p>
+<p><img src="/assets/1698198276653.png" alt="69819827665" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="更改启动后的画面"><a href="#更改启动后的画面" class="headerlink" title="更改启动后的画面"></a>更改启动后的画面</h2><p> <img src="/assets/1698198408847.png" alt="69819840884" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698198429788.png" alt="69819842978" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<blockquote>
+<p>可以在网站上找：<a target="_blank" rel="noopener" href="https://www.bootschool.net/ascii">https://www.bootschool.net/ascii</a></p>
+<p>修改<strong>resources&#x2F;banner.txt</strong>文件即可</p>
+</blockquote>
+<h1 id="配置文件的基本使用"><a href="#配置文件的基本使用" class="headerlink" title="配置文件的基本使用"></a>配置文件的基本使用</h1><h2 id="两种配置文件的格式"><a href="#两种配置文件的格式" class="headerlink" title="两种配置文件的格式"></a>两种配置文件的格式</h2><h3 id="application-properties"><a href="#application-properties" class="headerlink" title="application.properties"></a>application.properties</h3><p>key&#x3D;value</p>
+<h3 id="application-yaml"><a href="#application-yaml" class="headerlink" title="application.yaml"></a>application.yaml</h3><p>key:空格 value</p>
+<h2 id="yaml的好处"><a href="#yaml的好处" class="headerlink" title="yaml的好处"></a>yaml的好处</h2><p>可以存许多不同类型的数值</p>
+<p> <img src="/assets/1698199063469.png" alt="69819906346" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">person:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rigthl</span></span><br><span class="line">  <span class="attr">age:</span> <span class="number">21</span></span><br><span class="line">  <span class="attr">happy:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">birth:</span> <span class="number">2002</span><span class="string">/11/14</span></span><br><span class="line">  <span class="attr">maps:</span> &#123;<span class="attr">k1:</span> <span class="string">v1</span>,<span class="attr">k2:</span> <span class="string">v2</span>&#125;</span><br><span class="line">  <span class="attr">lists:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">study</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">java</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">python</span></span><br><span class="line">  <span class="attr">dog:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">狗崽</span></span><br><span class="line">    <span class="attr">age:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">dog:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">狗崽</span></span><br><span class="line">  <span class="attr">age:</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用yaml进行数据注入"><a href="#使用yaml进行数据注入" class="headerlink" title="使用yaml进行数据注入"></a>使用yaml进行数据注入</h2><h3 id="pojo"><a href="#pojo" class="headerlink" title="pojo"></a>pojo</h3><h4 id="dog"><a href="#dog" class="headerlink" title="dog"></a>dog</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rightl.lab2.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Repository;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;dog&quot;)</span></span><br><span class="line"><span class="comment">//@Component的意思是标识一个类为Spring容器管理的组件，会被spring自动扫描并且注册为bean</span></span><br><span class="line"><span class="comment">//为了更好的区别还有以下：</span></span><br><span class="line"><span class="comment">//@Service: 用于标识服务层的组件。</span></span><br><span class="line"><span class="comment">//@Repository: 用于标识数据访问层的组件，通常用于DAO类。</span></span><br><span class="line"><span class="comment">//@Controller: 用于标识控制器层的组件，通常用于Spring MVC中的Controller类。</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dog</span> &#123;</span><br><span class="line"><span class="comment">//    @Value(&quot;狗崽&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"><span class="comment">//    @Value(&quot;2&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String age;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Dog</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Dog</span><span class="params">(String name, String age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(String age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Dog&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&#x27;&quot;</span> + age + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="person"><a href="#person" class="headerlink" title="person"></a>person</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rightl.lab2.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.annotation.Validated;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;person&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> Boolean happy;</span><br><span class="line">    <span class="keyword">private</span> Date birth;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String,Object&gt; maps;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; lists;</span><br><span class="line">    <span class="keyword">private</span> Dog dog;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(String name, Integer age, Boolean happy, Date birth, Map&lt;String, Object&gt; maps, List&lt;Object&gt; lists, Dog dog)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.happy = happy;</span><br><span class="line">        <span class="built_in">this</span>.birth = birth;</span><br><span class="line">        <span class="built_in">this</span>.maps = maps;</span><br><span class="line">        <span class="built_in">this</span>.lists = lists;</span><br><span class="line">        <span class="built_in">this</span>.dog = dog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(Integer age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">getHappy</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> happy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setHappy</span><span class="params">(Boolean happy)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.happy = happy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">getBirth</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> birth;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBirth</span><span class="params">(Date birth)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birth = birth;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title function_">getMaps</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> maps;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setMaps</span><span class="params">(Map&lt;String, Object&gt; maps)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.maps = maps;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;Object&gt; <span class="title function_">getLists</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> lists;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setLists</span><span class="params">(List&lt;Object&gt; lists)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.lists = lists;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Dog <span class="title function_">getDog</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> dog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setDog</span><span class="params">(Dog dog)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.dog = dog;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Person&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, happy=&quot;</span> + happy +</span><br><span class="line">                <span class="string">&quot;, birth=&quot;</span> + birth +</span><br><span class="line">                <span class="string">&quot;, maps=&quot;</span> + maps +</span><br><span class="line">                <span class="string">&quot;, lists=&quot;</span> + lists +</span><br><span class="line">                <span class="string">&quot;, dog=&quot;</span> + dog +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="test"><a href="#test" class="headerlink" title="test"></a>test</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rightl.lab2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.rightl.lab2.pojo.Dog;</span><br><span class="line"><span class="keyword">import</span> com.rightl.lab2.pojo.Person;</span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.Test;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Lab2ApplicationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line"><span class="comment">//    @Autowired注解用于自动装配Spring Bean。</span></span><br><span class="line"><span class="comment">//    当一个类中的字段、构造函数或方法被@Autowired注解标记时，Spring容器会自动在容器中查找匹配的Bean，</span></span><br><span class="line"><span class="comment">//    并将其注入到标记了@Autowired的地方。</span></span><br><span class="line"><span class="comment">//    @Qualifier注解与@Autowired一起使用，用于指定具体的Bean名称，以解决多个同类型的Bean存在时的歧义性问题。</span></span><br><span class="line"><span class="comment">//    如果一个接口有多个实现类，或者一个类有多个子类，通过@Qualifier可以明确指定要注入的Bean。</span></span><br><span class="line">    <span class="keyword">private</span> Dog dog;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Person person;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">contextLoads</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(dog);</span><br><span class="line">        System.out.println(person);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Dog&#123;name=&#x27;狗崽&#x27;, age=&#x27;2&#x27;&#125;</span><br><span class="line">Person&#123;name=&#x27;rigthl&#x27;, age=21, happy=true, birth=Thu Nov 14 00:00:00 CST 2002, maps=&#123;k1=v1, k2=v2&#125;, lists=[study, java, python], dog=Dog&#123;name=&#x27;狗崽&#x27;, age=&#x27;2&#x27;&#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用properties进行数据注入"><a href="#使用properties进行数据注入" class="headerlink" title="使用properties进行数据注入"></a>使用properties进行数据注入</h2><p>（不推荐，麻烦）</p>
+<p> <img src="/assets/1698199256293.png" alt="69819925629" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="配置文件的其他注意事项"><a href="#配置文件的其他注意事项" class="headerlink" title="配置文件的其他注意事项"></a>配置文件的其他注意事项</h2><h3 id="位置"><a href="#位置" class="headerlink" title="位置"></a>位置</h3><p> <img src="/assets/1698289890102.png" alt="69828989010" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以写在以上的四个位置，有<strong>优先级</strong>：</p>
+<ul>
+<li>file:.&#x2F;config&#x2F;</li>
+<li>file:.&#x2F;</li>
+<li>classpath:&#x2F;config&#x2F;</li>
+<li>classpath:&#x2F;</li>
+</ul>
+<h3 id="yaml文件可以使用—用来分割不同的环境配置"><a href="#yaml文件可以使用—用来分割不同的环境配置" class="headerlink" title="yaml文件可以使用—用来分割不同的环境配置"></a>yaml文件可以使用—用来分割不同的环境配置</h3><blockquote>
+<p>默认最后一个优先级最高(此时的端口号是8081)</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果给加上以下代码(给配置文件起个名字，新版本跟之前的不一样)，端口就是8080</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">	<span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">	<span class="attr">config:</span></span><br><span class="line">		<span class="attr">activate:</span></span><br><span class="line">			<span class="attr">on-profile:</span> <span class="string">tests</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以使用以下代码，用来调用其想要的配置文件,端口就是8081</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">tests</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">config:</span></span><br><span class="line">    <span class="attr">activate:</span></span><br><span class="line">      <span class="attr">on-profile:</span> <span class="string">tests</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="自动装配原理"><a href="#自动装配原理" class="headerlink" title="自动装配原理"></a>自动装配原理</h1><ul>
+<li>springboot启动会加载大量的自动配置类</li>
+<li>我们看需要的功能有没有在springboot中默认写好的自动配置类中</li>
+<li>看自动配置类中到底配置了哪些组件</li>
+<li>给容器自动配置类添加组件的时候，会从properties类中获取某些属性，在配置文件中指定这些属性的值：<ul>
+<li>xxxAutoConfigurartion:自动配置类</li>
+<li>xxxProperties:封装配置文件中相关属性</li>
+</ul>
+</li>
+</ul>
+<p>可以在yaml文件中写以下，运行的时候可以看到哪些自动配置类<strong>是否生效</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">debug:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="静态资源"><a href="#静态资源" class="headerlink" title="静态资源"></a>静态资源</h1><h2 id="webjars"><a href="#webjars" class="headerlink" title="webjars"></a>webjars</h2><blockquote>
+<p>网址：<a target="_blank" rel="noopener" href="https://www.webjars.org/">https://www.webjars.org/</a></p>
+<p>可以在里面找到想要的，例如我要jquery的maven</p>
+</blockquote>
+<p> <img src="/assets/1698291489338.png" alt="69829148933" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>那么在依赖里面加入上面那段即可</p>
+<h2 id="静态资源默认的位置"><a href="#静态资源默认的位置" class="headerlink" title="静态资源默认的位置"></a>静态资源默认的位置</h2><ul>
+<li><p>webjars</p>
+<p>访问：locahost:8080&#x2F;webjars&#x2F;</p>
+</li>
+</ul>
+<p> <img src="/assets/1698291651596.png" alt="69829165159" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li>pubilc</li>
+<li>static</li>
+<li>resources</li>
+</ul>
+<p> <img src="/assets/1698291725996.png" alt="69829172599" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>​	访问：localhost:&#x2F;8080&#x2F;</p>
+<p> <img src="/assets/1698291824944.png" alt="69829182494" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>resource&gt;static（默认）&gt;public</p>
+<blockquote>
+<p>对于静态资源的位置也可以在yaml配置文件中进行修改，但是一般不建议修改！</p>
+</blockquote>
+<h2 id="首页"><a href="#首页" class="headerlink" title="首页"></a>首页</h2><p>这里把首页直接放在static中，并且命名为index.html，在浏览器中直接访问8080即可</p>
+<blockquote>
+<p>idea中，如果想要快速把html格式生成，使用快捷键**!+tab**</p>
+</blockquote>
+<p> <img src="/assets/1698292122038.png" alt="69829212203" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="ico"><a href="#ico" class="headerlink" title="ico"></a>ico</h2><blockquote>
+<p>截至现在暂时最新的使用方法是直接讲ico文件命名为favicon，放入static中即可，springboot会自动识别并且用作网站图标。</p>
+<p>其他方式也有：</p>
+<p>如果你放在了不同的路径，在yaml文件中配置一下即可</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">	<span class="attr">mvc:</span></span><br><span class="line">		<span class="attr">favicon:</span></span><br><span class="line">			<span class="attr">static-path-pattern:</span> <span class="string">/path/xxxxx</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><img src="/assets/1698292427172.png" alt="69829242717" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p> <img src="/assets/1698292449293.png" alt="69829244929" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/03/02/hello-world/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/tx.jpg">
+                </span>
+                <h6 class="trm-op-title">阅读指南</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/02</li>
+                <li>20:50</li>
+                <li>杂七杂八</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="springboot的第一个helloword"><a rel="nofollow" class="trm-toc-link" href="#springboot的第一个helloword"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">springboot的第一个helloword</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="快速生成一个项目"><a rel="nofollow" class="trm-toc-link" href="#快速生成一个项目"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">快速生成一个项目</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="可以在spring官网上用以下方式"><a rel="nofollow" class="trm-toc-link" href="#可以在spring官网上用以下方式"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text">可以在spring官网上用以下方式</span></a></li><li class="trm-toc-item trm-toc-level-3" title="可以直接在idea中生成一个springboot项目（推荐）"><a rel="nofollow" class="trm-toc-link" href="#可以直接在idea中生成一个springboot项目（推荐）"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text">可以直接在idea中生成一个springboot项目（推荐）</span></a></li><li class="trm-toc-item trm-toc-level-3" title="启动后下面有一行报错"><a rel="nofollow" class="trm-toc-link" href="#启动后下面有一行报错"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text">启动后下面有一行报错</span></a></li><li class="trm-toc-item trm-toc-level-3" title="编写hellowrod"><a rel="nofollow" class="trm-toc-link" href="#编写hellowrod"><span class="trm-toc-number">1.1.4.</span> <span class="trm-toc-text">编写hellowrod</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="进行项目的打包"><a rel="nofollow" class="trm-toc-link" href="#进行项目的打包"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">进行项目的打包</span></a></li><li class="trm-toc-item trm-toc-level-2" title="更改启动后的画面"><a rel="nofollow" class="trm-toc-link" href="#更改启动后的画面"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">更改启动后的画面</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="配置文件的基本使用"><a rel="nofollow" class="trm-toc-link" href="#配置文件的基本使用"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">配置文件的基本使用</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="两种配置文件的格式"><a rel="nofollow" class="trm-toc-link" href="#两种配置文件的格式"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">两种配置文件的格式</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="application.properties"><a rel="nofollow" class="trm-toc-link" href="#application-properties"><span class="trm-toc-number">2.1.1.</span> <span class="trm-toc-text">application.properties</span></a></li><li class="trm-toc-item trm-toc-level-3" title="application.yaml"><a rel="nofollow" class="trm-toc-link" href="#application-yaml"><span class="trm-toc-number">2.1.2.</span> <span class="trm-toc-text">application.yaml</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="yaml的好处"><a rel="nofollow" class="trm-toc-link" href="#yaml的好处"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">yaml的好处</span></a></li><li class="trm-toc-item trm-toc-level-2" title="使用yaml进行数据注入"><a rel="nofollow" class="trm-toc-link" href="#使用yaml进行数据注入"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">使用yaml进行数据注入</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="pojo"><a rel="nofollow" class="trm-toc-link" href="#pojo"><span class="trm-toc-number">2.3.1.</span> <span class="trm-toc-text">pojo</span></a></li><li class="trm-toc-item trm-toc-level-3" title="test"><a rel="nofollow" class="trm-toc-link" href="#test"><span class="trm-toc-number">2.3.2.</span> <span class="trm-toc-text">test</span></a></li><li class="trm-toc-item trm-toc-level-3" title="结果"><a rel="nofollow" class="trm-toc-link" href="#结果"><span class="trm-toc-number">2.3.3.</span> <span class="trm-toc-text">结果</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="使用properties进行数据注入"><a rel="nofollow" class="trm-toc-link" href="#使用properties进行数据注入"><span class="trm-toc-number">2.4.</span> <span class="trm-toc-text">使用properties进行数据注入</span></a></li><li class="trm-toc-item trm-toc-level-2" title="配置文件的其他注意事项"><a rel="nofollow" class="trm-toc-link" href="#配置文件的其他注意事项"><span class="trm-toc-number">2.5.</span> <span class="trm-toc-text">配置文件的其他注意事项</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="位置"><a rel="nofollow" class="trm-toc-link" href="#位置"><span class="trm-toc-number">2.5.1.</span> <span class="trm-toc-text">位置</span></a></li><li class="trm-toc-item trm-toc-level-3" title="yaml文件可以使用—用来分割不同的环境配置"><a rel="nofollow" class="trm-toc-link" href="#yaml文件可以使用—用来分割不同的环境配置"><span class="trm-toc-number">2.5.2.</span> <span class="trm-toc-text">yaml文件可以使用—用来分割不同的环境配置</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="自动装配原理"><a rel="nofollow" class="trm-toc-link" href="#自动装配原理"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">自动装配原理</span></a></li><li class="trm-toc-item trm-toc-level-1" title="静态资源"><a rel="nofollow" class="trm-toc-link" href="#静态资源"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">静态资源</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="webjars"><a rel="nofollow" class="trm-toc-link" href="#webjars"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">webjars</span></a></li><li class="trm-toc-item trm-toc-level-2" title="静态资源默认的位置"><a rel="nofollow" class="trm-toc-link" href="#静态资源默认的位置"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">静态资源默认的位置</span></a></li><li class="trm-toc-item trm-toc-level-2" title="优先级"><a rel="nofollow" class="trm-toc-link" href="#优先级"><span class="trm-toc-number">4.3.</span> <span class="trm-toc-text">优先级</span></a></li><li class="trm-toc-item trm-toc-level-2" title="首页"><a rel="nofollow" class="trm-toc-link" href="#首页"><span class="trm-toc-number">4.4.</span> <span class="trm-toc-text">首页</span></a></li><li class="trm-toc-item trm-toc-level-2" title="ico"><a rel="nofollow" class="trm-toc-link" href="#ico"><span class="trm-toc-number">4.5.</span> <span class="trm-toc-text">ico</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.10"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.1.10"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.1.10"></script>
+
+</body>
+
+</html>
