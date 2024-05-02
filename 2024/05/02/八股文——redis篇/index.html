@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="使用场景 缓存：穿透、击穿、雪崩；双写一致、持久化；数据过期、淘汰策略 分布式锁：setnx、redisson 计数器 保存token 消息队列 延迟队列  缓存穿透定义查询一个不存在的数据，DB中也查找不到，也不会写入redis缓存中，导致每次请求都查数据库。 解决 解决方案1  缓存一个空数据，查询返回的数据为空，仍然将这个空结果进行缓存 1&#123;key:xxx,value:null&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="八股文——redis篇">
+<meta property="og:url" content="https://right-l.github.io/2024/05/02/%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94redis%E7%AF%87/index.html">
+<meta property="og:site_name" content="沈池の博客">
+<meta property="og:description" content="使用场景 缓存：穿透、击穿、雪崩；双写一致、持久化；数据过期、淘汰策略 分布式锁：setnx、redisson 计数器 保存token 消息队列 延迟队列  缓存穿透定义查询一个不存在的数据，DB中也查找不到，也不会写入redis缓存中，导致每次请求都查数据库。 解决 解决方案1  缓存一个空数据，查询返回的数据为空，仍然将这个空结果进行缓存 1&#123;key:xxx,value:null&amp;#">
+<meta property="og:locale">
+<meta property="og:image" content="https://right-l.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-05-02T10:41:18.936Z">
+<meta property="article:modified_time" content="2024-05-02T10:42:19.558Z">
+<meta property="article:author" content="Right_L">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://right-l.github.io/img/404.jpg">
+
+
+<title >八股文——redis篇</title>
+
+<!-- Favicon -->
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"right-l.github.io","author":"Right_L","root":"/","typed_text":["戒骄戒躁"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"log.svg","icon16":"log.svg","icon32":"log.svg","appleTouchIcon":"log.svg","webmanifest":null,"visibilitychange":true,"hidden":"failure.ico","showText":"回来噜","hideText":"离开噜"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":true},"live_time":{"start_time":"03/2/2024 17:00:00","prefix":"BLOG已运行 undefined 天"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-05-02 18:42:19"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/log.svg">
+    
+    
+        <div class="trm-logo-text">
+            Right<span>L</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            八股文——redis篇
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/02
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            18:41
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Right_L
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ul>
+<li><code>缓存</code>：穿透、击穿、雪崩；双写一致、持久化；数据过期、淘汰策略</li>
+<li><code>分布式锁</code>：setnx、redisson</li>
+<li><code>计数器</code></li>
+<li><code>保存token</code></li>
+<li><code>消息队列</code></li>
+<li><code>延迟队列</code></li>
+</ul>
+<h1 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>查询一个<strong>不存在</strong>的数据，DB中也查找不到，也不会写入redis缓存中，导致<strong>每次请求都查数据库</strong>。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ul>
+<li>解决方案1</li>
+</ul>
+<p>缓存一个空数据，查询返回的数据为空，仍然将这个<strong>空结果进行缓存</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;key:xxx,value:null&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点是比较简单，但是消耗内存，可能发生<strong>不一致</strong>的问题（可能后面key有数据了导致不一致）</p>
+<ul>
+<li>解决方案2</li>
+</ul>
+<p>使用<strong>布隆过滤器</strong>，拦截不存在的数据，数据不存在的时候直接返回，不需要走redis和DB。</p>
+<p>（缓存预热时，<code>预热布隆过滤器</code>）</p>
+<blockquote>
+<p>会有一定的误判率，可以进行误判率大小的设置（5%）</p>
+</blockquote>
+<h1 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h1><h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>给某个key设置了过期时间，当<strong>key过期</strong>的时候，恰好这个时间对这个key有<strong>大量的并发请求</strong>，可能会瞬间将DB压垮。</p>
+<p>（此时也是直接访问了DB）</p>
+<h2 id="解决-1"><a href="#解决-1" class="headerlink" title="解决"></a>解决</h2><ul>
+<li>解决方案1</li>
+</ul>
+<p><strong>互斥锁</strong>：写入<strong>缓存之前加锁，写完缓存之后释放锁</strong>，这样可以保证下一个查询的时候读到的是redis缓存的数据，而不需要访问DB</p>
+<ul>
+<li>解决方案2</li>
+</ul>
+<p><strong>逻辑过期</strong>：<code>不设置过期的时间</code>，在查的时候访问逻辑过期的时间，如果逻辑时间过期了那么也要获取互斥锁进行数据的更新，但是区别在于<strong>不需要等待更新完之后才能返回，此时直接返回过期的数据</strong>。</p>
+<blockquote>
+<p>互斥锁保证了强一致性，但是性能上比较差</p>
+<p>逻辑过期是高可用，性能优，但是一致性比较差</p>
+</blockquote>
+<h1 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h1><h2 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h2><p>同一时间段<strong>大量</strong>的缓存key同时失效或者redis服务宕机，导致大量请求到达数据库，带来巨大的压力</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>如果是同时大量的key过期，那么给<strong>不同的key的TTL添加随机值</strong>，尽量不要一样的时间。</p>
+<p>如果是redis宕机的话，利用redis<strong>集群</strong>提高服务的可用性（哨兵、集群）</p>
+<p>其他解决：</p>
+<ul>
+<li>给缓存业务添加降级限流策略</li>
+<li>给业务添加多级缓存</li>
+</ul>
+<h1 id="双写一致性"><a href="#双写一致性" class="headerlink" title="双写一致性"></a>双写一致性</h1><p><strong>如果保证mysql和redis数据的同步</strong></p>
+<h2 id="一致性高的情况"><a href="#一致性高的情况" class="headerlink" title="一致性高的情况"></a>一致性高的情况</h2><ul>
+<li><strong>延迟双删除</strong>（删除缓存-修改数据库-（延迟）-删除缓存）</li>
+</ul>
+<p>删除两次缓存是为了避免读脏数据</p>
+<ul>
+<li><strong>读写锁</strong>（强一致，性能低）</li>
+</ul>
+<h2 id="最终一致性的情况"><a href="#最终一致性的情况" class="headerlink" title="最终一致性的情况"></a>最终一致性的情况</h2><ul>
+<li><strong>异步通知</strong>保证数据最终的一致性</li>
+</ul>
+<p>例如可以使用<strong>MQ</strong>进行监听信息、也可以使用Canal（基于mysql主从同步实现的）</p>
+<h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><h3 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h3><p>Redis数据备份文件，也叫redis<strong>数据快照</strong>。把内存中的所有数据<strong>都记录到磁盘中</strong>，当redis实例故障重启之后，从磁盘中读取快照，恢复数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">save（主进程）</span><br><span class="line">bgsave（子进程）</span><br><span class="line">#900秒内至少有一个key修改，则执行bgsave</span><br><span class="line">sava 900 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="RDB的执行原理"><a href="#RDB的执行原理" class="headerlink" title="RDB的执行原理"></a>RDB的执行原理</h3><p>bgsave开始的时候会fork（克隆）主进程得到子进程，子进程<strong>共享主进程的内存数据</strong>。完成fork之后读取内存数据并写入新的RDB文件，替换旧的。</p>
+<blockquote>
+<p>fork主要是复制页表，页表记录了<strong>虚拟地址和物理地址的映射关系</strong></p>
+<p>fork采用的是copy-on-write技术：</p>
+<ul>
+<li>当主进程执行读操作的时候，访问共享内存。</li>
+<li>当主进程执行写操作的时候，会拷贝一份数据，执行写操作。</li>
+</ul>
+</blockquote>
+<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><h3 id="定义-4"><a href="#定义-4" class="headerlink" title="定义"></a>定义</h3><p>AOF全称为追加文件，redis处理的<strong>每一个写命令都会记录在AOF文件</strong>，可以看作是命令日志文件。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>默认是关闭的，如果需要开启，修改配置文件<code>redis.conf</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">appendonly yes</span><br><span class="line">appendfilename &quot;appendonly.aof&quot;</span><br><span class="line">#记录频率 执行一次就立即记录/执行完先放aof缓冲每隔一秒将缓冲写到aof（默认）/执行完先放缓冲区操作系统决定何时写入磁盘</span><br><span class="line">appendfsync always/everysec/no</span><br><span class="line">#也可以设置触发阈值自动去重写AOF文件</span><br><span class="line">#aof文件比上次增长超过多少触发重写</span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">#aof体积最小多大以上触发重写</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">配置项</th>
+<th align="center">刷机时机</th>
+<th align="center">优点</th>
+<th align="center">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">always</td>
+<td align="center">同步刷盘</td>
+<td align="center">可靠性高，几乎不丢数据</td>
+<td align="center">性能影响大</td>
+</tr>
+<tr>
+<td align="center">everysec</td>
+<td align="center">每秒刷盘</td>
+<td align="center">性能适中</td>
+<td align="center">最多丢失1s数据</td>
+</tr>
+<tr>
+<td align="center">no</td>
+<td align="center">操作系统控制</td>
+<td align="center">性能最好</td>
+<td align="center">可靠性较差，可能丢失大量数据</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>因为是记录命令，AOF的文件比RDB文件大得多。而且AOF会对记录的同一个key的多次写操作，但只有最后一个才有意义。可以执行<strong>bgrewriteaof</strong>命令，执行重写功能，用最少的命令达到一样的效果。</p>
+</blockquote>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p><img src="/assets/1714569390638.png" alt="71456939063" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以两个一起配合使用！</p>
+<h1 id="数据过期策略"><a href="#数据过期策略" class="headerlink" title="数据过期策略"></a>数据过期策略</h1><h2 id="定义-5"><a href="#定义-5" class="headerlink" title="定义"></a>定义</h2><p>redis对数据设置数据的有效时间，数据过期之后就需要将数据从内存中删除掉。可以<strong>按照不同的规则进行删除</strong>，这种删除规则就被称之为数据的过期策略。</p>
+<h2 id="惰性删除"><a href="#惰性删除" class="headerlink" title="惰性删除"></a>惰性删除</h2><p>设置了过期时间，即便过期了也先不管；<strong>当需要该key的时候，再检查是否过期，如果过期了再删掉</strong>。</p>
+<blockquote>
+<p>对cpu友好，不需要浪费时间定期检查是否过期；但是对内存不友好，如果过期了一直又不使用，就一直没办法删除。</p>
+</blockquote>
+<h2 id="定期删除"><a href="#定期删除" class="headerlink" title="定期删除"></a>定期删除</h2><p>每隔一段时间就对key进行检查，删除里面过期的key（从<strong>一定数量的数据库</strong>中取出<strong>一定数量的随机key</strong>进行检查，并删除过期的key）</p>
+<ul>
+<li><strong>slow模式</strong>：定时任务，执行频率默认10hz，每次不超过25ms，以通过修改配置文件redis.conf的hz选项。</li>
+<li><strong>fast模式</strong>：执行频率不固定，但两次间隔不低于2ms，每次耗时不超过1ms</li>
+</ul>
+<blockquote>
+<p>可以通过限制删除执行的时长和频率减少删除操作对cpu的影响；也能够有效释放过期键占用的内存。</p>
+<p>就是难以确定删除操作的时长和频率。</p>
+</blockquote>
+<p>一般两种配合使用！</p>
+<h1 id="数据淘汰策略"><a href="#数据淘汰策略" class="headerlink" title="数据淘汰策略"></a>数据淘汰策略</h1><p>缓存过多，内存占满了怎么办</p>
+<h2 id="定义-6"><a href="#定义-6" class="headerlink" title="定义"></a>定义</h2><p>redis<strong>内存不够</strong>的时候，再往里面添加新的key，redis会按照某一种规则将内存中的数据删除掉。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ul>
+<li>noeviction：不淘汰任何key，内存满不允许写入，<code>默认</code></li>
+<li>volatile-ttl：对设置了TTL的key，比较key剩余的TTL值，越小的先淘汰</li>
+<li>allkeys-random：对全体key，随机进行淘汰</li>
+<li>volatile-random：对设置了TTL的key，随机进行淘汰</li>
+<li>allkeys-lru：对全体key，基于LRU算法（<strong>最近最少使用</strong>）进行淘汰</li>
+<li>volatile-lru：对设置了TTL的key，基于LRU算法进行淘汰</li>
+<li>allkeys-lfu：对全体key，基于LFU算法（<strong>最少频率使用</strong>）进行淘汰</li>
+<li>volatile-lfu：对设置了TTL的key，基于LFU算法进行淘汰</li>
+</ul>
+<h1 id="redis分布式锁"><a href="#redis分布式锁" class="headerlink" title="redis分布式锁"></a>redis分布式锁</h1><h2 id="setnx"><a href="#setnx" class="headerlink" title="setnx"></a>setnx</h2><p>redis实现分布式锁主要利用了redis的setnx命令，其意思的如果<strong>不存在则set</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#添加锁,NX是互斥，EX是设置超过时间</span><br><span class="line">set lock value NX EX 10</span><br><span class="line">#释放锁</span><br><span class="line">DEL key</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中如何合理的控制锁的有效时长？</p>
+<ul>
+<li>根据业务执行时间预估</li>
+<li>给锁续期</li>
+</ul>
+</blockquote>
+<h2 id="redisson"><a href="#redisson" class="headerlink" title="redisson"></a>redisson</h2><p>可以<strong>自动进行续期</strong>（watch dog看门狗），其中当获取锁失败的时候，可以指定阈值进行<strong>获取锁的循环</strong>，而不是直接中断。</p>
+<blockquote>
+<p>默认每隔十秒</p>
+<p>可以重入</p>
+</blockquote>
+<h2 id="redisson实现的分布式锁——主从一致性"><a href="#redisson实现的分布式锁——主从一致性" class="headerlink" title="redisson实现的分布式锁——主从一致性"></a>redisson实现的分布式锁——主从一致性</h2><p>**ReadLock(红锁)**：不能只在一个redis实例上创建锁，应该在多个redis实例上创建锁（n&#x2F;2+1）</p>
+<ul>
+<li>实现复杂</li>
+<li>性能差</li>
+<li>运维繁琐</li>
+</ul>
+<blockquote>
+<p>redis是AP思想（高可用性）</p>
+<p>zookeeper是CP思想（强一致性）</p>
+</blockquote>
+<h1 id="redis集群方式"><a href="#redis集群方式" class="headerlink" title="redis集群方式"></a>redis集群方式</h1><h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><h3 id="定义-7"><a href="#定义-7" class="headerlink" title="定义"></a>定义</h3><p>读写分离，主节点写，然后同步给从节点，从节点读取。</p>
+<h3 id="主从数据同步原理"><a href="#主从数据同步原理" class="headerlink" title="主从数据同步原理"></a>主从数据同步原理</h3><ul>
+<li>主从全量同步</li>
+<li>主从增量同步（slave重启或者后期数据变化）</li>
+</ul>
+<h2 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h2><h3 id="定义-8"><a href="#定义-8" class="headerlink" title="定义"></a>定义</h3><p>哨兵（sentinel）模式实现了主从集群的<strong>自动故障恢复</strong></p>
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><ul>
+<li><strong>监控</strong>master和slave是否按照预期工作（心跳机制）</li>
+<li><strong>自动故障恢复</strong>，如果master故障，sentinel会将一个slave提升为master</li>
+<li>sentinel充当redis客户端的服务发现源，当集群发生故障转移的时候，会<strong>将最新信息推送给redis服务端</strong></li>
+</ul>
+<h3 id="脑裂"><a href="#脑裂" class="headerlink" title="脑裂"></a>脑裂</h3><p>由于网络的问题，可能导致sentinel认为master挂掉了，然后重新选出了一个新的master，这样就会导致出现两个master</p>
+<p>但是服务端还是对旧的master中写入数据，当网络恢复之后，会强制把旧的master换为slave</p>
+<p>这样会出现新写入的数据没有同步，数据丢失</p>
+<p>解决方发：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#写入数据的时候其从节点至少有一个</span><br><span class="line">min-replicas-to-write 1</span><br><span class="line">#数据复制和同步的延迟不能超过5s</span><br><span class="line">min-replicas-max-lag 5</span><br></pre></td></tr></table></figure>
+
+<h2 id="分片集群"><a href="#分片集群" class="headerlink" title="分片集群"></a>分片集群</h2><h3 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h3><ul>
+<li>集群多有多个master，每个master保存不同数据</li>
+<li>每个master可以有多个slave</li>
+<li>master之间可以通过ping检测健康状态</li>
+<li>客户端请求可以访问集群任意节点，最终都会被转发到正确节点（路由）</li>
+</ul>
+<blockquote>
+<p>redis集群有16384哈希槽</p>
+<p>可以解决海量数据以及高并发读写</p>
+</blockquote>
+<h1 id="redis是单线程的，为什么还那么快呢？"><a href="#redis是单线程的，为什么还那么快呢？" class="headerlink" title="redis是单线程的，为什么还那么快呢？"></a>redis是单线程的，为什么还那么快呢？</h1><ul>
+<li>纯内存操作，执行速度快</li>
+<li>采用单线程，避免了不必要的上下文切换可竞争条件，多线程还要考虑多线程安全问题</li>
+<li>采用I&#x2F;O多路复用模型，非阻塞IO</li>
+</ul>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/04/28/warehouse2/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">动力恒合仓库项目2</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/04/28</li>
+                <li>22:09</li>
+                <li>项目记录</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="使用场景"><a rel="nofollow" class="trm-toc-link" href="#使用场景"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">使用场景</span></a></li><li class="trm-toc-item trm-toc-level-1" title="缓存穿透"><a rel="nofollow" class="trm-toc-link" href="#缓存穿透"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">缓存穿透</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-2" title="解决"><a rel="nofollow" class="trm-toc-link" href="#解决"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">解决</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="缓存击穿"><a rel="nofollow" class="trm-toc-link" href="#缓存击穿"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">缓存击穿</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-1"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-2" title="解决"><a rel="nofollow" class="trm-toc-link" href="#解决-1"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">解决</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="缓存雪崩"><a rel="nofollow" class="trm-toc-link" href="#缓存雪崩"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">缓存雪崩</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-2"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-2" title="解决方案"><a rel="nofollow" class="trm-toc-link" href="#解决方案"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">解决方案</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="双写一致性"><a rel="nofollow" class="trm-toc-link" href="#双写一致性"><span class="trm-toc-number">5.</span> <span class="trm-toc-text">双写一致性</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="一致性高的情况"><a rel="nofollow" class="trm-toc-link" href="#一致性高的情况"><span class="trm-toc-number">5.1.</span> <span class="trm-toc-text">一致性高的情况</span></a></li><li class="trm-toc-item trm-toc-level-2" title="最终一致性的情况"><a rel="nofollow" class="trm-toc-link" href="#最终一致性的情况"><span class="trm-toc-number">5.2.</span> <span class="trm-toc-text">最终一致性的情况</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="持久化"><a rel="nofollow" class="trm-toc-link" href="#持久化"><span class="trm-toc-number">6.</span> <span class="trm-toc-text">持久化</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="RDB"><a rel="nofollow" class="trm-toc-link" href="#RDB"><span class="trm-toc-number">6.1.</span> <span class="trm-toc-text">RDB</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-3"><span class="trm-toc-number">6.1.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-3" title="RDB的执行原理"><a rel="nofollow" class="trm-toc-link" href="#RDB的执行原理"><span class="trm-toc-number">6.1.2.</span> <span class="trm-toc-text">RDB的执行原理</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="AOF"><a rel="nofollow" class="trm-toc-link" href="#AOF"><span class="trm-toc-number">6.2.</span> <span class="trm-toc-text">AOF</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-4"><span class="trm-toc-number">6.2.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-3" title="配置"><a rel="nofollow" class="trm-toc-link" href="#配置"><span class="trm-toc-number">6.2.2.</span> <span class="trm-toc-text">配置</span></a></li><li class="trm-toc-item trm-toc-level-3" title="比较"><a rel="nofollow" class="trm-toc-link" href="#比较"><span class="trm-toc-number">6.2.3.</span> <span class="trm-toc-text">比较</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="数据过期策略"><a rel="nofollow" class="trm-toc-link" href="#数据过期策略"><span class="trm-toc-number">7.</span> <span class="trm-toc-text">数据过期策略</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-5"><span class="trm-toc-number">7.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-2" title="惰性删除"><a rel="nofollow" class="trm-toc-link" href="#惰性删除"><span class="trm-toc-number">7.2.</span> <span class="trm-toc-text">惰性删除</span></a></li><li class="trm-toc-item trm-toc-level-2" title="定期删除"><a rel="nofollow" class="trm-toc-link" href="#定期删除"><span class="trm-toc-number">7.3.</span> <span class="trm-toc-text">定期删除</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="数据淘汰策略"><a rel="nofollow" class="trm-toc-link" href="#数据淘汰策略"><span class="trm-toc-number">8.</span> <span class="trm-toc-text">数据淘汰策略</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-6"><span class="trm-toc-number">8.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-2" title="解决方法"><a rel="nofollow" class="trm-toc-link" href="#解决方法"><span class="trm-toc-number">8.2.</span> <span class="trm-toc-text">解决方法</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="redis分布式锁"><a rel="nofollow" class="trm-toc-link" href="#redis分布式锁"><span class="trm-toc-number">9.</span> <span class="trm-toc-text">redis分布式锁</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="setnx"><a rel="nofollow" class="trm-toc-link" href="#setnx"><span class="trm-toc-number">9.1.</span> <span class="trm-toc-text">setnx</span></a></li><li class="trm-toc-item trm-toc-level-2" title="redisson"><a rel="nofollow" class="trm-toc-link" href="#redisson"><span class="trm-toc-number">9.2.</span> <span class="trm-toc-text">redisson</span></a></li><li class="trm-toc-item trm-toc-level-2" title="redisson实现的分布式锁——主从一致性"><a rel="nofollow" class="trm-toc-link" href="#redisson实现的分布式锁——主从一致性"><span class="trm-toc-number">9.3.</span> <span class="trm-toc-text">redisson实现的分布式锁——主从一致性</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="redis集群方式"><a rel="nofollow" class="trm-toc-link" href="#redis集群方式"><span class="trm-toc-number">10.</span> <span class="trm-toc-text">redis集群方式</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="主从复制"><a rel="nofollow" class="trm-toc-link" href="#主从复制"><span class="trm-toc-number">10.1.</span> <span class="trm-toc-text">主从复制</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-7"><span class="trm-toc-number">10.1.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-3" title="主从数据同步原理"><a rel="nofollow" class="trm-toc-link" href="#主从数据同步原理"><span class="trm-toc-number">10.1.2.</span> <span class="trm-toc-text">主从数据同步原理</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="哨兵模式"><a rel="nofollow" class="trm-toc-link" href="#哨兵模式"><span class="trm-toc-number">10.2.</span> <span class="trm-toc-text">哨兵模式</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义-8"><span class="trm-toc-number">10.2.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-3" title="功能"><a rel="nofollow" class="trm-toc-link" href="#功能"><span class="trm-toc-number">10.2.2.</span> <span class="trm-toc-text">功能</span></a></li><li class="trm-toc-item trm-toc-level-3" title="脑裂"><a rel="nofollow" class="trm-toc-link" href="#脑裂"><span class="trm-toc-number">10.2.3.</span> <span class="trm-toc-text">脑裂</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="分片集群"><a rel="nofollow" class="trm-toc-link" href="#分片集群"><span class="trm-toc-number">10.3.</span> <span class="trm-toc-text">分片集群</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="特征"><a rel="nofollow" class="trm-toc-link" href="#特征"><span class="trm-toc-number">10.3.1.</span> <span class="trm-toc-text">特征</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="redis是单线程的，为什么还那么快呢？"><a rel="nofollow" class="trm-toc-link" href="#redis是单线程的，为什么还那么快呢？"><span class="trm-toc-number">11.</span> <span class="trm-toc-text">redis是单线程的，为什么还那么快呢？</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.10"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.1.10"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.1.10"></script>
+
+</body>
+
+</html>
