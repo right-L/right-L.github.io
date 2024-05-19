@@ -7,18 +7,22 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta property="og:type" content="website">
-<meta property="og:title" content="分类">
-<meta property="og:url" content="https://right-l.github.io/categories/index.html">
+<meta name="description" content="工厂设计模式简单工厂模式 抽象产品：定义了产品规范，描述了产品的主要特征和功能 具体产品：实现或者继承抽象产品的子类 具体工厂：提供了创建产品的方法，调用者通过该方法来获取产品  （解耦合，但还是有一定的耦合） 工厂方法模式 抽象工厂：提供了创建产品的接口，调用者通过它来访问具体工厂的工厂方法来创建产品 具体工厂：主要实现抽象工厂中的抽象方法，完成具体产品的创建 抽象产品：定义了产品规范，描述了产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="八股文——设计模式篇">
+<meta property="og:url" content="https://right-l.github.io/2024/05/20/%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="沈池の博客">
+<meta property="og:description" content="工厂设计模式简单工厂模式 抽象产品：定义了产品规范，描述了产品的主要特征和功能 具体产品：实现或者继承抽象产品的子类 具体工厂：提供了创建产品的方法，调用者通过该方法来获取产品  （解耦合，但还是有一定的耦合） 工厂方法模式 抽象工厂：提供了创建产品的接口，调用者通过它来访问具体工厂的工厂方法来创建产品 具体工厂：主要实现抽象工厂中的抽象方法，完成具体产品的创建 抽象产品：定义了产品规范，描述了产">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-03-02T16:11:23.044Z">
-<meta property="article:modified_time" content="2024-03-02T16:11:23.044Z">
+<meta property="og:image" content="https://right-l.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-05-19T17:20:57.405Z">
+<meta property="article:modified_time" content="2024-05-19T17:22:06.780Z">
 <meta property="article:author" content="Right_L">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://right-l.github.io/img/404.jpg">
 
 
-<title >分类</title>
+<title >八股文——设计模式篇</title>
 
 <!-- Favicon -->
 
@@ -59,7 +63,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"right-l.github.io","author":"Right_L","root":"/","typed_text":["戒骄戒躁"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"log.svg","icon16":"log.svg","icon32":"log.svg","appleTouchIcon":"log.svg","webmanifest":null,"visibilitychange":true,"hidden":"failure.ico","showText":"回来噜","hideText":"离开噜"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":true},"live_time":{"start_time":"03/2/2024 17:00:00","prefix":"BLOG已运行 undefined 天"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"path":"search.xml"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":false,"isHome":false,"postUpdate":"2024-03-03 00:11:23"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-05-20 01:22:06"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
@@ -156,7 +160,7 @@
                 
             </li>
             
-            <li class="menu-item-has-children current-menu-item">
+            <li class="menu-item-has-children ">
                 <a  href="/categories/" target="">
                     分类
                 </a>
@@ -217,17 +221,15 @@
         <div class="container">
             <div class="row">
                 
-                <div class="col-lg-4"></div>
-                
-                <div class="col-lg-8">
+                <div class="col-lg-12">
 
                     <!-- banner title -->
-                    <div class="trm-banner-text ">
+                    <div class="trm-banner-text trm-text-center ">
                         <div class="trm-label trm-mb-20">
-                            欢迎来到我のBLOG~
+                            NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            LOOK!<br>请查阅！
+                            八股文——设计模式篇
                         </h1>
 
                         
@@ -237,7 +239,7 @@
                                 </li>
                                 <li>
                                     <span>
-                                        categories
+                                        2024
                                     </span>
                                 </li>
                             </ul>
@@ -262,105 +264,109 @@
     <div class="container">
         <div class="row">
             
-                <div class="trm-page-sidebar col-lg-4 hidden-sm">
-                    <!-- main card -->
-                    <div class="trm-main-card-frame trm-sidebar">
-    <div class="trm-main-card"> 
-        <!-- card header -->
-<div class="trm-mc-header">
-    <div class="trm-avatar-frame trm-mb-20">
-        <img alt="Avatar" class="trm-avatar" src="https://img2.baidu.com/it/u=2497059402,2323404564&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1709485200&t=530b1e1e63e6beb216250eef132f35e3">
-    </div>
-    <h5 class="trm-name trm-mb-15">
-        沈池
-    </h5>
-    
-        <div class="trm-label">
-            记得
-            <span class="trm-typed-text">
-                <!-- Words for theme.user.typedText -->
-            </span>
-        </div>
-    
-</div>
-<!-- card header end -->
-        <!-- sidebar social -->
-
-<div class="trm-divider trm-mb-40 trm-mt-40"></div>
-<div class="trm-social">
-    
-        <a href="https://blog.csdn.net/Aure_xl" title="csdn" rel="nofollow" target="_blank">
-            <i class="iconfont far fa-copyright"></i>
-        </a>
-    
-        <a href="https://github.com" title="github" rel="nofollow" target="_blank">
-            <i class="iconfont fab fa-github"></i>
-        </a>
-    
-</div>
-
-<!-- sidebar social end -->
-        <!-- info -->
-<div class="trm-divider trm-mb-40 trm-mt-40"></div>
-<ul class="trm-table trm-mb-20">
-    
-        <li>
-            <div class="trm-label">
-                专业:
-            </div>
-            <div class="trm-label trm-label-light">
-                数据科学与大数据技术
-            </div>
-        </li>
-    
-        <li>
-            <div class="trm-label">
-                爱好:
-            </div>
-            <div class="trm-label trm-label-light">
-                看番！小说！学习！
-            </div>
-        </li>
-    
-        <li>
-            <div class="trm-label">
-                今年目标:
-            </div>
-            <div class="trm-label trm-label-light">
-                Get a good offer
-            </div>
-        </li>
-    
-</ul>
-<!-- info end -->
-
-        
-    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
-    <!-- action button -->
-    <div class="text-center">
-        <a href="mailto:781469066@qq.com" class="trm-btn">
-            联系我
-            <i class="iconfont far fa-envelope"></i>
-        </a>
-    </div>
-    <!-- action button end -->
-
-    </div>
-</div>
-                    <!-- main card end -->
-                </div>
-            
-            <div class="trm-page-content col-lg-8">
+            <div class="trm-page-content col-lg-12">
                 <div id="trm-content" class="trm-content">
-                    <div class="row">
-    <div class="col-lg-12">
-        <div class="trm-card">
-            <div style="padding: 0 20px;">
-                <ul class="row trm-list"><li class="col-lg-4 trm-list-item " style="margin: 6px 0;"><a class="category-list-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><span class="category-list-count">（11）</span></li><li class="col-lg-4 trm-list-item " style="margin: 6px 0;"><a class="category-list-link" href="/categories/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/">杂七杂八</a><span class="category-list-count">（1）</span></li><li class="col-lg-4 trm-list-item " style="margin: 6px 0;"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/">项目记录</a><span class="category-list-count">（2）</span></li></ul>
-            </div>
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            01:20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Right_L
         </div>
     </div>
 </div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="工厂设计模式"><a href="#工厂设计模式" class="headerlink" title="工厂设计模式"></a>工厂设计模式</h1><h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><ul>
+<li>抽象产品：定义了产品规范，描述了产品的主要特征和功能</li>
+<li>具体产品：实现或者继承抽象产品的子类</li>
+<li>具体工厂：提供了创建产品的方法，调用者通过该方法来获取产品</li>
+</ul>
+<p>（解耦合，但还是有一定的耦合）</p>
+<h2 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h2><ul>
+<li>抽象工厂：提供了创建产品的接口，调用者通过它来访问具体工厂的工厂方法来创建产品</li>
+<li>具体工厂：主要实现抽象工厂中的抽象方法，完成具体产品的创建</li>
+<li>抽象产品：定义了产品规范，描述了产品的主要特征和功能</li>
+<li>具体产品：提供了创建产品的方法，调用者通过该方法来获取产品</li>
+</ul>
+<p>（遵循了开闭原则，不用改源代码，加新的具体工厂和产品就可以）</p>
+<p>过于复杂的话应付不过来</p>
+<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p>抽象工厂模式是工厂方法模式的升级版本，工厂方法模式只生产一个等级的产品，而抽象工厂模式可以<strong>生产多个等级的产品</strong>；一个超级工厂创建其他工厂，该超级工厂又称为其他工厂的工厂。</p>
+<h1 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h1><p>定义了一系列算法，并将每个算法封装起来，使它们可以相互替换，且算法的变化不会影响使用算法的客户；通过对算法进行封装，把使用算法的责任和算法的实现分割，并委派给不用的对象对这些算法进行管理。</p>
+<ul>
+<li>抽象策略类：抽象角色，通常由一个接口或者抽象类实现，此角色给出所有的具体策略所需要的接口。</li>
+<li>具体策略类：实现了抽象策略定义的接口，提供具体算法实现或行为。</li>
+<li>环境类：持有一个策略类的引用，最终给客户端调用。</li>
+</ul>
+<blockquote>
+<p>策略类之间可以自由切换，易于扩展，避免使用多重条件选择语句，充分体现面向对象的设计思想</p>
+<p>客户端必须知道所有策略类，并自行决定使用哪一个，策略模式将造成产生很多策略类</p>
+</blockquote>
+<h2 id="工厂-策略"><a href="#工厂-策略" class="headerlink" title="工厂+策略"></a>工厂+策略</h2><p><img src="/assets/1716128013913.png" alt="71612801391" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h1 id="责任链设计模式"><a href="#责任链设计模式" class="headerlink" title="责任链设计模式"></a>责任链设计模式</h1><p>避免请求发送者与多个请求处理者耦合在一起，将所有请求的处理者通过前一个对象记住其下一个对象的引用而连成一条链；当有请求发生的时候，可以沿着这条链传递，直到有对象处理它为止。</p>
+<ul>
+<li>抽象处理者角色：定义一个处理请求的接口，包含抽象处理方法和一个后继连接</li>
+<li>具体处理者角色：实现抽象处理者的处理方法，判断能否处理本次请求，如果可以则处理，否则将该请求转给后继者</li>
+<li>客户类角色：创建处理链，并向链头的具体处理者对象提交请求，不关系处理细节和请求传递过程</li>
+</ul>
+<blockquote>
+<p>优点:</p>
+<p>降低了对象之间的耦合度，增强了系统的可扩展性，增强了给对象指派职责的灵活性，责任链简化了对象之间的连接，责任分担。</p>
+<p>缺点：</p>
+<p>对较长的职责链，请求的处理可能涉及多个处理对象，系统性能将收到一定影响；职责链建立的合理性要靠客户端来保证，增加了客户端的复杂性，可能会由于职责链的错误设置而导致系统出错，可能导致循环调用。</p>
+</blockquote>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/05/20/%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">八股文——消息中间件篇</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/05/20</li>
+                <li>01:20</li>
+                <li>学习笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
 
                     <div class="trm-divider footer-divider"></div>
 
@@ -390,14 +396,30 @@
 
             
 
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="工厂设计模式"><a rel="nofollow" class="trm-toc-link" href="#工厂设计模式"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">工厂设计模式</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="简单工厂模式"><a rel="nofollow" class="trm-toc-link" href="#简单工厂模式"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">简单工厂模式</span></a></li><li class="trm-toc-item trm-toc-level-2" title="工厂方法模式"><a rel="nofollow" class="trm-toc-link" href="#工厂方法模式"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">工厂方法模式</span></a></li><li class="trm-toc-item trm-toc-level-2" title="抽象工厂模式"><a rel="nofollow" class="trm-toc-link" href="#抽象工厂模式"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">抽象工厂模式</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="策略模式"><a rel="nofollow" class="trm-toc-link" href="#策略模式"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">策略模式</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="工厂+策略"><a rel="nofollow" class="trm-toc-link" href="#工厂-策略"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">工厂+策略</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="责任链设计模式"><a rel="nofollow" class="trm-toc-link" href="#责任链设计模式"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">责任链设计模式</span></a></li></ol>
+      </div>
+    </div>
+
             
 <div class="trm-fixed-container">
     
-    
-    
-        <div class="trm-fixed-btn hidden-md" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
-            <i class="iconfont fas fa-arrows-alt-h"></i>
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
         </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
     
     <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
         <i class="iconfont fas fa-arrow-up"></i>

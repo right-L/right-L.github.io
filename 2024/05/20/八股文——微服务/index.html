@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="SPring Cloud五大组件 Eureka注册中心 Ribbon负载均衡 Feign远程调用 Hystrix服务熔断 Zuul&#x2F;Gateway网关  springcould如何实现服务注册发现常见的注册中心作用是：服务注册和发现 常见注册中心有：eureka&#x2F;nocas&#x2F;zookeeper eureka 服务注册：服务提供者需要把自己的信息注册到eureka，由e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="八股文——框微服务篇">
+<meta property="og:url" content="https://right-l.github.io/2024/05/20/%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="沈池の博客">
+<meta property="og:description" content="SPring Cloud五大组件 Eureka注册中心 Ribbon负载均衡 Feign远程调用 Hystrix服务熔断 Zuul&#x2F;Gateway网关  springcould如何实现服务注册发现常见的注册中心作用是：服务注册和发现 常见注册中心有：eureka&#x2F;nocas&#x2F;zookeeper eureka 服务注册：服务提供者需要把自己的信息注册到eureka，由e">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-05-19T17:20:31.417Z">
+<meta property="article:modified_time" content="2024-05-19T17:22:17.427Z">
+<meta property="article:author" content="Right_L">
+<meta name="twitter:card" content="summary">
+
+
+<title >八股文——框微服务篇</title>
+
+<!-- Favicon -->
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"right-l.github.io","author":"Right_L","root":"/","typed_text":["戒骄戒躁"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"log.svg","icon16":"log.svg","icon32":"log.svg","appleTouchIcon":"log.svg","webmanifest":null,"visibilitychange":true,"hidden":"failure.ico","showText":"回来噜","hideText":"离开噜"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":true},"live_time":{"start_time":"03/2/2024 17:00:00","prefix":"BLOG已运行 undefined 天"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-05-20 01:22:17"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/log.svg">
+    
+    
+        <div class="trm-logo-text">
+            Right<span>L</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            八股文——框微服务篇
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            01:20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Right_L
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="SPring-Cloud"><a href="#SPring-Cloud" class="headerlink" title="SPring Cloud"></a>SPring Cloud</h1><h2 id="五大组件"><a href="#五大组件" class="headerlink" title="五大组件"></a>五大组件</h2><ul>
+<li>Eureka注册中心</li>
+<li>Ribbon负载均衡</li>
+<li>Feign远程调用</li>
+<li>Hystrix服务熔断</li>
+<li>Zuul&#x2F;Gateway网关</li>
+</ul>
+<h2 id="springcould如何实现服务注册发现"><a href="#springcould如何实现服务注册发现" class="headerlink" title="springcould如何实现服务注册发现"></a>springcould如何实现服务注册发现</h2><p>常见的注册中心作用是：<strong>服务注册</strong>和<strong>发现</strong></p>
+<p>常见注册中心有：<strong>eureka&#x2F;nocas&#x2F;zookeeper</strong></p>
+<h3 id="eureka"><a href="#eureka" class="headerlink" title="eureka"></a>eureka</h3><ul>
+<li><strong>服务注册</strong>：服务提供者需要把自己的信息注册到eureka，由eureka保存这些信息（服务名称、ip、端口等）</li>
+<li><strong>服务发现</strong>：消费者向eureka拉取服务列表信息，如果服务提供者有集群，则消费者会利用<strong>负载均衡</strong>算法选择一个发起调用</li>
+<li><strong>服务监控</strong>：服务提供者会每隔30s向eureka<strong>发送心跳</strong>，报告健康状态，如果在90s内没有收到心跳，那么从eureka剔除</li>
+</ul>
+<h3 id="eureka和nocas的区别"><a href="#eureka和nocas的区别" class="headerlink" title="eureka和nocas的区别"></a>eureka和nocas的区别</h3><ul>
+<li>nocas可以设置是否为临时实例，如果是，那么也是心跳机制（<code>默认</code>，AP）；如果不是（CP），那么nocas会主<strong>动询问</strong>非临时实例是否存活，非临时实例不会被剔除。</li>
+<li>并且如果信息更新了，nocas可以<strong>主动推送</strong>，而eureka需要消费者自己拉取。</li>
+<li>nocas支持了<strong>配置中心</strong></li>
+</ul>
+<h2 id="Ribbon如何实现负载均衡"><a href="#Ribbon如何实现负载均衡" class="headerlink" title="Ribbon如何实现负载均衡"></a>Ribbon如何实现负载均衡</h2><h3 id="常用策略"><a href="#常用策略" class="headerlink" title="常用策略"></a>常用策略</h3><ul>
+<li>RoundRobinRule**:简单轮询**服务列表选择服务器</li>
+<li>WeightedRespoonseTimeRule:按照<strong>权重</strong>来选择服务器，权重越小的响应时间越长</li>
+<li>RandomRule:<strong>随机</strong>选择一个<strong>可用</strong>的服务器</li>
+<li>ZoneAvoidanceRule（<code>默认</code>）:区域敏感策略，以<strong>区域可用</strong>的服务器为基础进行服务器的选择。使用zone对服务器进行分类，这个zone可以理解为一个机房机架等，如何对zone内的多个服务进行轮询。</li>
+</ul>
+<h3 id="自定义负载均衡"><a href="#自定义负载均衡" class="headerlink" title="自定义负载均衡"></a>自定义负载均衡</h3><ul>
+<li><strong>全局</strong>：创建类实现IRule接口，可以指定负载均衡策略</li>
+<li><strong>局部</strong>：在客户端的配置文件中，可以配置某一个服务调用的负载均衡策略</li>
+</ul>
+<h2 id="服务雪崩"><a href="#服务雪崩" class="headerlink" title="服务雪崩"></a>服务雪崩</h2><p>一个服务失败，导致整条链路的服务都失败</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li><strong>服务降级</strong></li>
+</ul>
+<p>服务自我保护的一种方式，或者保护下游服务的一种方式，确保服务不会收到请求突增影响变得不可用，确保服务不会崩溃。一般在实际开发<strong>与feign接口整合，编写降低逻辑</strong></p>
+<ul>
+<li><strong>服务熔断</strong></li>
+</ul>
+<p>默认是关闭的，需要手动打开。如果检测到<strong>10s内请求失败达到50%<strong>，触发熔断机制，然后</strong>每隔5s</strong>重新尝试请求微服务，如果不能响应继续走熔断机制。（循环）直到微服务可达，关闭熔断机制，恢复正常请求。</p>
+<h3 id="预防"><a href="#预防" class="headerlink" title="预防"></a>预防</h3><p>限流</p>
+<h2 id="微服务如何监控"><a href="#微服务如何监控" class="headerlink" title="微服务如何监控"></a>微服务如何监控</h2><p>常见的使用Skywalking，可以快速定位问题、性能的分析、服务关系、服务告警。</p>
+<h1 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h1><h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ul>
+<li>Tomcat设置最大连接数（适合单机）</li>
+<li><strong>Nginx漏桶算法</strong></li>
+<li><strong>网关令牌桶算法</strong></li>
+<li>自定义拦截器</li>
+</ul>
+<h2 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h2><p>存储固定数量的请求，漏桶以<strong>固定的速率漏出</strong>请求。</p>
+<h2 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h2><p><strong>固定速率生成令牌</strong>，存入令牌桶，桶满了之后暂停生成。只有申请到令牌的请求才可以被处理，如果没有会被阻塞或者丢弃。</p>
+<p>（令牌一般存在redis）</p>
+<h1 id="CAP和BASE"><a href="#CAP和BASE" class="headerlink" title="CAP和BASE"></a>CAP和BASE</h1><h2 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h2><ul>
+<li>C一致性s</li>
+<li>A可用性</li>
+<li>P分区容错性</li>
+</ul>
+<blockquote>
+<p>无法同时满足三个</p>
+</blockquote>
+<h2 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h2><ul>
+<li>BA基本可以</li>
+<li>S软状态：在一定时间内允许出现中间状态（临时不一致）</li>
+<li>E最终一致性</li>
+</ul>
+<h1 id="分布式服务的接口幂等性"><a href="#分布式服务的接口幂等性" class="headerlink" title="分布式服务的接口幂等性"></a>分布式服务的接口幂等性</h1><h2 id="幂等定义"><a href="#幂等定义" class="headerlink" title="幂等定义"></a>幂等定义</h2><p><strong>多次调用</strong>方法或者接口<strong>不会改变业务状态</strong>，可以保证<strong>重复调用</strong>的结果和<strong>单次调用</strong>的<strong>结果一致</strong>。</p>
+<table>
+<thead>
+<tr>
+<th align="center">请求方式</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">GET</td>
+<td align="center">天然幂等</td>
+</tr>
+<tr>
+<td align="center">POST</td>
+<td align="center"><strong>新增，不是幂等</strong></td>
+</tr>
+<tr>
+<td align="center">PUT</td>
+<td align="center"><strong>绝对值更新是幂等；增量更新不是幂等</strong></td>
+</tr>
+<tr>
+<td align="center">DELETE</td>
+<td align="center">幂等</td>
+</tr>
+</tbody></table>
+<h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><ul>
+<li>数据库唯一索引（可以解决新增的问题）</li>
+<li>token+redis（新增和修改）</li>
+<li>分布式锁（新增和修改）</li>
+</ul>
+<h1 id="分布式任务调度"><a href="#分布式任务调度" class="headerlink" title="分布式任务调度"></a>分布式任务调度</h1><p>常见的——<strong>xxl-job</strong></p>
+<h2 id="解决的问题"><a href="#解决的问题" class="headerlink" title="解决的问题"></a>解决的问题</h2><ul>
+<li>解决集群任务的重复执行问题</li>
+<li>cron表达式定义灵活</li>
+<li>定时任务失败了，重试和统计</li>
+<li>任务量大，分片执行</li>
+</ul>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/05/20/%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">八股文——消息中间件篇</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/05/20</li>
+                <li>01:20</li>
+                <li>学习笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/05/20/%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E9%9B%86%E5%90%88%E7%AF%87/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">八股文——集合篇</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/05/20</li>
+                <li>01:20</li>
+                <li>学习笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="SPring Cloud"><a rel="nofollow" class="trm-toc-link" href="#SPring-Cloud"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">SPring Cloud</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="五大组件"><a rel="nofollow" class="trm-toc-link" href="#五大组件"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">五大组件</span></a></li><li class="trm-toc-item trm-toc-level-2" title="springcould如何实现服务注册发现"><a rel="nofollow" class="trm-toc-link" href="#springcould如何实现服务注册发现"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">springcould如何实现服务注册发现</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="eureka"><a rel="nofollow" class="trm-toc-link" href="#eureka"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text">eureka</span></a></li><li class="trm-toc-item trm-toc-level-3" title="eureka和nocas的区别"><a rel="nofollow" class="trm-toc-link" href="#eureka和nocas的区别"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text">eureka和nocas的区别</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="Ribbon如何实现负载均衡"><a rel="nofollow" class="trm-toc-link" href="#Ribbon如何实现负载均衡"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">Ribbon如何实现负载均衡</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="常用策略"><a rel="nofollow" class="trm-toc-link" href="#常用策略"><span class="trm-toc-number">1.3.1.</span> <span class="trm-toc-text">常用策略</span></a></li><li class="trm-toc-item trm-toc-level-3" title="自定义负载均衡"><a rel="nofollow" class="trm-toc-link" href="#自定义负载均衡"><span class="trm-toc-number">1.3.2.</span> <span class="trm-toc-text">自定义负载均衡</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="服务雪崩"><a rel="nofollow" class="trm-toc-link" href="#服务雪崩"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text">服务雪崩</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="解决方案"><a rel="nofollow" class="trm-toc-link" href="#解决方案"><span class="trm-toc-number">1.4.1.</span> <span class="trm-toc-text">解决方案</span></a></li><li class="trm-toc-item trm-toc-level-3" title="预防"><a rel="nofollow" class="trm-toc-link" href="#预防"><span class="trm-toc-number">1.4.2.</span> <span class="trm-toc-text">预防</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="微服务如何监控"><a rel="nofollow" class="trm-toc-link" href="#微服务如何监控"><span class="trm-toc-number">1.5.</span> <span class="trm-toc-text">微服务如何监控</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="限流"><a rel="nofollow" class="trm-toc-link" href="#限流"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">限流</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="实现方法"><a rel="nofollow" class="trm-toc-link" href="#实现方法"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">实现方法</span></a></li><li class="trm-toc-item trm-toc-level-2" title="漏桶算法"><a rel="nofollow" class="trm-toc-link" href="#漏桶算法"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">漏桶算法</span></a></li><li class="trm-toc-item trm-toc-level-2" title="令牌桶算法"><a rel="nofollow" class="trm-toc-link" href="#令牌桶算法"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">令牌桶算法</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="CAP和BASE"><a rel="nofollow" class="trm-toc-link" href="#CAP和BASE"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">CAP和BASE</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="CAP"><a rel="nofollow" class="trm-toc-link" href="#CAP"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">CAP</span></a></li><li class="trm-toc-item trm-toc-level-2" title="BASE"><a rel="nofollow" class="trm-toc-link" href="#BASE"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">BASE</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="分布式服务的接口幂等性"><a rel="nofollow" class="trm-toc-link" href="#分布式服务的接口幂等性"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">分布式服务的接口幂等性</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="幂等定义"><a rel="nofollow" class="trm-toc-link" href="#幂等定义"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">幂等定义</span></a></li><li class="trm-toc-item trm-toc-level-2" title="设计"><a rel="nofollow" class="trm-toc-link" href="#设计"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">设计</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="分布式任务调度"><a rel="nofollow" class="trm-toc-link" href="#分布式任务调度"><span class="trm-toc-number">5.</span> <span class="trm-toc-text">分布式任务调度</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="解决的问题"><a rel="nofollow" class="trm-toc-link" href="#解决的问题"><span class="trm-toc-number">5.1.</span> <span class="trm-toc-text">解决的问题</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.10"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.1.10"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.1.10"></script>
+
+</body>
+
+</html>
