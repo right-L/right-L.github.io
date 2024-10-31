@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="概述与安装Elasticsearch 是一个近乎实时的搜索平台。这意味着从索引文档到文档可搜索之间会有轻微的延迟（通常为一秒钟）。 安装elasticsearch-6.3.2我这里使用虚拟机进行的安装，因为公司使用的是6.3.2我就也下载了这个版本，目前已经到了8（据说变动还挺大的）  确定jdk有1.8  12345hadoop@bigdataVM:&#x2F;opt$ java -versionjava">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES的基本使用">
+<meta property="og:url" content="https://right-l.github.io/2024/10/31/ES%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="沈池の博客">
+<meta property="og:description" content="概述与安装Elasticsearch 是一个近乎实时的搜索平台。这意味着从索引文档到文档可搜索之间会有轻微的延迟（通常为一秒钟）。 安装elasticsearch-6.3.2我这里使用虚拟机进行的安装，因为公司使用的是6.3.2我就也下载了这个版本，目前已经到了8（据说变动还挺大的）  确定jdk有1.8  12345hadoop@bigdataVM:&#x2F;opt$ java -versionjava">
+<meta property="og:locale">
+<meta property="og:image" content="https://right-l.github.io/img/404.jpg">
+<meta property="og:image" content="https://right-l.github.io/img/404.jpg">
+<meta property="og:image" content="https://right-l.github.io/img/404.jpg">
+<meta property="og:image" content="https://right-l.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-10-31T08:27:29.861Z">
+<meta property="article:modified_time" content="2024-10-31T08:31:12.835Z">
+<meta property="article:author" content="Right_L">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://right-l.github.io/img/404.jpg">
+
+
+<title >ES的基本使用</title>
+
+<!-- Favicon -->
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/log.svg?v=2.1.10' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"right-l.github.io","author":"Right_L","root":"/","typed_text":["戒骄戒躁"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"log.svg","icon16":"log.svg","icon32":"log.svg","appleTouchIcon":"log.svg","webmanifest":null,"visibilitychange":true,"hidden":"failure.ico","showText":"回来噜","hideText":"离开噜"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":true},"live_time":{"start_time":"03/2/2024 17:00:00","prefix":"BLOG已运行 undefined 天"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-10-31 16:31:12"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/log.svg">
+    
+    
+        <div class="trm-logo-text">
+            Right<span>L</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            ES的基本使用
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            10/31
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            16:27
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Right_L
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="概述与安装"><a href="#概述与安装" class="headerlink" title="概述与安装"></a>概述与安装</h1><p>Elasticsearch 是一个近乎实时的搜索平台。这意味着从索引文档到文档可搜索之间会有轻微的延迟（通常为一秒钟）。</p>
+<h2 id="安装elasticsearch-6-3-2"><a href="#安装elasticsearch-6-3-2" class="headerlink" title="安装elasticsearch-6.3.2"></a>安装elasticsearch-6.3.2</h2><p>我这里使用虚拟机进行的安装，因为公司使用的是6.3.2我就也下载了这个版本，目前已经到了8（据说变动还挺大的）</p>
+<ul>
+<li>确定jdk有1.8</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hadoop@bigdataVM:/opt$ java -version</span><br><span class="line">java version &quot;1.8.0_181&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_181-b13)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.181-b13, mixed mode)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.3.2.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf elasticsearch-6.3.2.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hadoop@bigdataVM:/opt$ cd elasticsearch-6.3.2/</span><br><span class="line">hadoop@bigdataVM:/opt/elasticsearch-6.3.2$ ls</span><br><span class="line">bin     lib          logs     NOTICE.txt  README.textile</span><br><span class="line">config  LICENSE.txt  modules  plugins</span><br><span class="line">hadoop@bigdataVM:/opt/elasticsearch-6.3.2$ cd bin/</span><br><span class="line">hadoop@bigdataVM:/opt/elasticsearch-6.3.2/bin$ ./elasticsearch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>浏览器访问9200端口可以看到</li>
+</ul>
+<p><img src="/assets/1721028930883.png" alt="72102893088" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="安装可视化界面kibana-6-3-2"><a href="#安装可视化界面kibana-6-3-2" class="headerlink" title="安装可视化界面kibana-6.3.2"></a>安装可视化界面kibana-6.3.2</h2><blockquote>
+<p>需要注意的是，下载的kibana的版本要跟elasticsearch的版本一致，其自带node，没有下载node也可以</p>
+</blockquote>
+<ul>
+<li>下载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/downloads/kibana/kibana-6.3.2-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzf kibana-6.3.2-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>更改配置文件（config&#x2F;kibana.yml）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 服务器主机地址</span><br><span class="line">server.host: &quot;0.0.0.0&quot;</span><br><span class="line">elasticsearch.url: &quot;http://localhost:9200&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动并且访问端口5601</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kibana</span><br></pre></td></tr></table></figure>
+
+<p><img src="/assets/1721032680632.png" alt="72103268063" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<blockquote>
+<p>后面的代码都在Dev Tools中编写</p>
+</blockquote>
+<p>#ES核心概念</p>
+<h2 id="集群-Cluster"><a href="#集群-Cluster" class="headerlink" title="集群(Cluster)"></a>集群(Cluster)</h2><p>Elasticsearch 集群是由一个或多个节点组成的集合，这些节点共同工作并共享数据。每个集群都有一个唯一的名称，默认为 “<strong>elasticsearch</strong>“。集群中的每个节点都有一个 <strong>ID</strong>，用于<strong>唯一标识</strong>该节点。</p>
+<h2 id="节点-Node"><a href="#节点-Node" class="headerlink" title="节点(Node)"></a>节点(Node)</h2><p>节点是集群中的一个服务器，它存储数据并参与集群的索引和搜索功能。每个节点有一个<strong>唯一的名字</strong>，可以通过配置文件进行设置。节点可以是<strong>主节点</strong>、<strong>数据节点</strong>、<strong>协调节点</strong>等，不同类型的节点承担不同的职责。<strong>一个集群至少有一个节点</strong></p>
+<h2 id="索引-Index"><a href="#索引-Index" class="headerlink" title="索引(Index)"></a>索引(Index)</h2><p>索引是一个或多个文档的集合，这些文档具有相似的特性。每个索引都有一个<strong>唯一的名字</strong>，索引名称用于索引、搜索、更新和删除操作。索引类似于关系数据库中的表。</p>
+<h2 id="文档-Document"><a href="#文档-Document" class="headerlink" title="文档(Document)"></a>文档(Document)</h2><p>文档是可以被索引的<strong>基本单位</strong>，以 <strong>JSON 格式</strong>表示。每个文档是一个 JSON 对象，包含一个或多个字段，每个字段有相应的数据类型（如字符串、数值、日期等）。文档类似于关系数据库中的行。</p>
+<h2 id="类型-Type-新版已弃用"><a href="#类型-Type-新版已弃用" class="headerlink" title="类型(Type,新版已弃用)"></a>类型(Type,新版已弃用)</h2><p>在早期版本的 Elasticsearch 中，类型是索引中的一种逻辑分类，用于将相似文档分组。一个索引可以有<strong>多个类型</strong>，每个类型包含多个文档。然而，在最新版本中，类型已经被弃用，<strong>推荐使用单一类型索引</strong>。</p>
+<p>##分片 (Shard)</p>
+<p><strong>分片</strong>是索引数据的一个分片，可以是<strong>主分片</strong>（Primary Shard）或<strong>副本分片</strong>（Replica Shard）。分片使得数据可以分布在集群中的多个节点上，从而提升性能和可扩展性。<strong>默认情况下，每个索引有 5 个主分片和 1 个副本分片</strong>，但可以根据需要进行配置。</p>
+<blockquote>
+<p>倒排索引：采用了Lucene倒排索引作为底层，这种结构适用于快速的全文搜索。一个索引由文档中所<strong>不重复的列表构成</strong>，对于每一个词，都有一个包含它的文档列表。例如：</p>
+<table>
+<thead>
+<tr>
+<th align="center">term</th>
+<th align="center">doc_1</th>
+<th align="center">doc_2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Left</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">Right</td>
+<td align="center"></td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">Center</td>
+<td align="center">√</td>
+<td align="center">×</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p>##副本 (Replica)</p>
+<p><strong>副本是主分片的副本</strong>，用于提供高可用性和故障转移。在主分片故障时，副本分片可以承担其职责，从而确保数据不丢失。副本分片还可以用于搜索请求的负载均衡。</p>
+<p>##映射 (Mapping)</p>
+<p>映射定义了索引中<strong>文档的结构</strong>，即<strong>字段类型</strong>和<strong>属性</strong>。它类似于关系数据库中的模式定义，确定了文档中每个字段的数据类型、索引选项、分析器等。</p>
+<h2 id="分析器-Analyzer"><a href="#分析器-Analyzer" class="headerlink" title="分析器 (Analyzer)"></a>分析器 (Analyzer)</h2><p>分析器用于将文本字段处理成词条，供索引和搜索使用。分析器由<strong>字符过滤器</strong>、<strong>分词器</strong>和<strong>词项过滤器</strong>组成。分析器在索引和查询时均可使用，不同分析器会对文本进行不同的处理。</p>
+<p>##查询 DSL (Query DSL)</p>
+<p>查询 DSL 是 Elasticsearch 提供的<strong>用于构建查询请求的 JSON 格式的语法</strong>。它支持多种查询类型，如匹配查询、布尔查询、范围查询、聚合查询等，可以组合使用以满足复杂的查询需求。</p>
+<h1 id="IK分词器"><a href="#IK分词器" class="headerlink" title="IK分词器"></a>IK分词器</h1><p>提供了两个算法</p>
+<ul>
+<li><strong>ik_smart</strong>:最少切分</li>
+<li><strong>ik_max_word</strong>:最细粒度划分</li>
+</ul>
+<h2 id="下载、解压、简单使用"><a href="#下载、解压、简单使用" class="headerlink" title="下载、解压、简单使用"></a>下载、解压、简单使用</h2><ul>
+<li>到&#x2F;opt&#x2F;elasticsearch-6.3.2&#x2F;plugins下载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.3.2/elasticsearch-analysis-ik-6.3.2.zip</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解压（解压到&#x2F;opt&#x2F;elasticsearch-6.3.2&#x2F;plugins&#x2F;ik）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip elasticsearch-analysis-ik-6.3.2.zip</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><del>更改配置文件（&#x2F;opt&#x2F;elasticsearch-6.3.2&#x2F;config&#x2F;elasticsearch.yml）</del></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">index:</span><br><span class="line">  analysis:</span><br><span class="line">    analyzer:</span><br><span class="line">      ik:</span><br><span class="line">        type: &quot;custom&quot;</span><br><span class="line">        tokenizer: &quot;ik_max_word&quot;</span><br><span class="line">      ik_smart:</span><br><span class="line">        type: &quot;custom&quot;</span><br><span class="line">        tokenizer: &quot;ik_smart&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以到bin下进行查询插件列表</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop@bigdataVM:/opt/elasticsearch-6.3.2/bin$ ./elasticsearch-plugin list</span><br><span class="line">ik</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意的是原先下的zip得删掉！</p>
+</blockquote>
+<ul>
+<li>进入kibana中测试一下</li>
+</ul>
+<p><strong>最少切分：</strong></p>
+<p><img src="/assets/1721054033726.png" alt="72105403372" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><strong>最细粒度划分：</strong></p>
+<p><img src="/assets/1721054084515.png" alt="72105408451" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="ik分词器增加自己的配置"><a href="#ik分词器增加自己的配置" class="headerlink" title="ik分词器增加自己的配置"></a>ik分词器增加自己的配置</h2><p>现在我text为如下，进行分词展示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;ik_smart&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;巴卫好帅&quot;</span><br><span class="line">&#125;</span><br><span class="line">GET /_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;巴卫好帅&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果均如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;巴&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 1,</span><br><span class="line">      &quot;type&quot;: &quot;CN_CHAR&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;卫&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 1,</span><br><span class="line">      &quot;end_offset&quot;: 2,</span><br><span class="line">      &quot;type&quot;: &quot;CN_CHAR&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;好&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 3,</span><br><span class="line">      &quot;type&quot;: &quot;CN_CHAR&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;帅&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 3,</span><br><span class="line">      &quot;end_offset&quot;: 4,</span><br><span class="line">      &quot;type&quot;: &quot;CN_CHAR&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>我想把巴卫和好帅都变为一个词，在&#x2F;opt&#x2F;elasticsearch-6.3.2&#x2F;plugins&#x2F;ik&#x2F;config下增加一个*.dic文件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">巴卫</span><br><span class="line">好帅</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>路径&#x2F;opt&#x2F;elasticsearch-6.3.2&#x2F;plugins&#x2F;ik&#x2F;config&#x2F;IKAnalyzer.cfg.xml 配置   <strong><entry key="ext_dict">bawei.dic</entry></strong></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">properties</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://java.sun.com/dtd/properties.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">comment</span>&gt;</span>IK Analyzer 扩展配置<span class="tag">&lt;/<span class="name">comment</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--用户可以在这里配置自己的扩展字典 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;ext_dict&quot;</span>&gt;</span>bawei.dic<span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br><span class="line">         <span class="comment">&lt;!--用户可以在这里配置自己的扩展停止词字典--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">&quot;ext_stopwords&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--用户可以在这里配置远程扩展字典 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;entry key=&quot;remote_ext_dict&quot;&gt;words_location&lt;/entry&gt; --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--用户可以在这里配置远程扩展停止词字典--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- &lt;entry key=&quot;remote_ext_stopwords&quot;&gt;words_location&lt;/entry&gt; --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：如果有多个扩展字典可以用<strong>分号</strong>隔开</p>
+</blockquote>
+<ul>
+<li>重启之后再测试一下，结果如下：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;巴卫&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 2,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;好帅&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 4,</span><br><span class="line">      &quot;type&quot;: &quot;CN_WORD&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Rest风格"><a href="#Rest风格" class="headerlink" title="Rest风格"></a>Rest风格</h1><h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><ul>
+<li>创建索引并且插入了数据</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PUT /test/type1/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Right_L&quot;,</span><br><span class="line">  &quot;age&quot;: 21</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;type1&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 0,</span><br><span class="line">  &quot;_primary_term&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>&#x2F;test</strong>：这是索引（index）的名称。在Elasticsearch中，索引相当于一个数据库，用于存储和管理一组相关的文档。每个索引都包含一个或多个类型的文档。</p>
+<p><strong>&#x2F;type1</strong>：这是文档类型（type）的名称。在Elasticsearch 6.x版本之前，类型用于将类似的文档进行分组。在最新版本中，类型已经被废弃，不再推荐使用。现在，每个索引通常只有一种类型的文档（_doc）。</p>
+<p><strong>&#x2F;1</strong>：这是文档的ID（document ID）。在Elasticsearch中，每个文档都有一个唯一的ID，用于标识该文档。通过这个ID，可以对特定的文档进行操作（如创建、更新、删除和检索）。</p>
+<blockquote>
+<p>其中version会根据你更改了几次进行自动增加，修改的话可以直接使用put进行覆盖，也可以使用update</p>
+<p>并且其结构类型不设置也会自动给你设置，例如name设置为test，age设置为long</p>
+</blockquote>
+<p>进行查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /test/type1/1</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;type1&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;found&quot;: true,</span><br><span class="line">  &quot;_source&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;Right_L&quot;,</span><br><span class="line">    &quot;age&quot;: 21</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;test&quot;: &#123;</span><br><span class="line">    &quot;aliases&quot;: &#123;&#125;,</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">      &quot;type1&quot;: &#123;</span><br><span class="line">        &quot;properties&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;long&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;name&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">            &quot;fields&quot;: &#123;</span><br><span class="line">              &quot;keyword&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;ignore_above&quot;: 256</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">      &quot;index&quot;: &#123;</span><br><span class="line">        &quot;creation_date&quot;: &quot;1721058898403&quot;,</span><br><span class="line">        &quot;number_of_shards&quot;: &quot;5&quot;,</span><br><span class="line">        &quot;number_of_replicas&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;uuid&quot;: &quot;-_JuZLElRuGUTy8K_9Z4lA&quot;,</span><br><span class="line">        &quot;version&quot;: &#123;</span><br><span class="line">          &quot;created&quot;: &quot;6030299&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;provided_name&quot;: &quot;test&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建索引结构</li>
+</ul>
+<blockquote>
+<p>在6.x版本中，每个索引必须有一个类型，即使是默认的类型 <code>_doc</code>。</p>
+<p>但在7.x版本中，类型的概念已经被弃用，只允许一个类型 <code>_doc</code>。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">PUT /tset2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;_doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;age&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;long&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;birthday&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;date&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true,</span><br><span class="line">  &quot;shards_acknowledged&quot;: true,</span><br><span class="line">  &quot;index&quot;: &quot;tset2&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进行查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">GET tset2</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;tset2&quot;: &#123;</span><br><span class="line">    &quot;aliases&quot;: &#123;&#125;,</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">      &quot;_doc&quot;: &#123;</span><br><span class="line">        &quot;properties&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;long&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;birthday&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;date&quot;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;name&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;text&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">      &quot;index&quot;: &#123;</span><br><span class="line">        &quot;creation_date&quot;: &quot;1721059894743&quot;,</span><br><span class="line">        &quot;number_of_shards&quot;: &quot;5&quot;,</span><br><span class="line">        &quot;number_of_replicas&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;uuid&quot;: &quot;J3oPKVj6Rs2p7ktAMynF0g&quot;,</span><br><span class="line">        &quot;version&quot;: &#123;</span><br><span class="line">          &quot;created&quot;: &quot;6030299&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;provided_name&quot;: &quot;tset2&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看集群健康状态"><a href="#查看集群健康状态" class="headerlink" title="查看集群健康状态"></a>查看集群健康状态</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/health?v</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">epoch      timestamp cluster       status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent</span><br><span class="line">1721092697 09:18:17  elasticsearch yellow          1         1     11  11    0    0       10             0                  -                 52.4%</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>status</strong>表示集群健康状态<ul>
+<li><code>green</code>：集群正常，所有的<strong>主分片和副本分片都正常</strong>。</li>
+<li><code>yellow</code>：集群功能正常，但有<strong>副本分片没有分配</strong>。数据安全性和冗余性降低，不影响读写操作。</li>
+<li><code>red</code>：集群<strong>存在问题</strong>，有主分片没有分配，可能会影响数据的读写操作。</li>
+</ul>
+</li>
+<li><strong>node.tot1a</strong>表示集群中所有节点的总数</li>
+<li><strong>node.data</strong>表示集群中数据节点的总数</li>
+<li>shards所有分片的总数</li>
+<li><strong>pri</strong>表示集群中主分片的总数</li>
+<li><strong>relo</strong>正在进行的分片重新分配的数量</li>
+<li><strong>init</strong>正在初始化的分片数量</li>
+<li><strong>unassign</strong>未分配的分片数量</li>
+<li><strong>pending_tasks</strong>挂起任务的数量</li>
+<li><strong>max_task_wait_time</strong>最大任务等待时间</li>
+<li><strong>active_shards_percent</strong>活跃分片的百分比</li>
+</ul>
+<h2 id="查看有多少个索引库"><a href="#查看有多少个索引库" class="headerlink" title="查看有多少个索引库"></a>查看有多少个索引库</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/indices?v</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">health status index   uuid                   pri rep docs.count docs.deleted store.size pri.store.size</span><br><span class="line">yellow open   test    -_JuZLElRuGUTy8K_9Z4lA   5   1          1            0      4.7kb          4.7kb</span><br><span class="line">green  open   .kibana h9-UkOz-SFy4EOhK7oBM1g   1   0          1            0        4kb            4kb</span><br><span class="line">yellow open   tset2   J3oPKVj6Rs2p7ktAMynF0g   5   1          0            0      1.2kb          1.2kb</span><br></pre></td></tr></table></figure>
+
+<h2 id="节点列表"><a href="#节点列表" class="headerlink" title="节点列表"></a>节点列表</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/nodes?v</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip        heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name</span><br><span class="line">127.0.0.1           33          97   1    0.23    0.20     0.19 mdi       *      NTwrill</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改文档"><a href="#修改文档" class="headerlink" title="修改文档"></a>修改文档</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST /test/type1/1/_update</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;shenchi&quot;,</span><br><span class="line">    &quot;age&quot;: 19,</span><br><span class="line">    &quot;class&quot;: &quot;CS101&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;type1&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 4,</span><br><span class="line">  &quot;result&quot;: &quot;updated&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 3,</span><br><span class="line">  &quot;_primary_term&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>不要忘记“doc”: {}</p>
+</blockquote>
+<p>其中如果年龄想要增加可以使用如下<strong>script</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST /test/type1/1/_update</span><br><span class="line">&#123;</span><br><span class="line">  &quot;script&quot;: &quot;ctx._source.age += 5&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;type1&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 5,</span><br><span class="line">  &quot;result&quot;: &quot;updated&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 4,</span><br><span class="line">  &quot;_primary_term&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除索引、文档"><a href="#删除索引、文档" class="headerlink" title="删除索引、文档"></a>删除索引、文档</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /tset2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果指定到是哪个文档那就详细删除到那个文档</p>
+</blockquote>
+<h1 id="文档基本操作"><a href="#文档基本操作" class="headerlink" title="文档基本操作"></a>文档基本操作</h1><p>假如现在有以下数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">PUT /shenchi/user/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;age&quot;: 20,</span><br><span class="line">  &quot;desc&quot;: &quot;happy&quot;,</span><br><span class="line">  &quot;tages&quot;: [&quot;see&quot;,&quot;eat&quot;,&quot;read&quot;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /shenchi/user/2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;2&quot;,</span><br><span class="line">  &quot;age&quot;: 21,</span><br><span class="line">  &quot;desc&quot;: &quot;sad&quot;,</span><br><span class="line">  &quot;tages&quot;: [&quot;eat&quot;,&quot;read&quot;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /shenchi/user/3</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;3&quot;,</span><br><span class="line">  &quot;age&quot;: 22,</span><br><span class="line">  &quot;desc&quot;: &quot;yes up&quot;,</span><br><span class="line">  &quot;tages&quot;: [&quot;eat&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基本查询"><a href="#基本查询" class="headerlink" title="基本查询"></a>基本查询</h2><ul>
+<li>查询所有</li>
+</ul>
+<p><code>match_all</code>查询用于匹配所有文档，不进行任何过滤或分词。它返回索引中的所有文档，通常用于需要获取全部数据或进行简单分页时。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询某一个</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search?q=name:1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询某个字段升序&#x2F;降序</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search?q=*&amp;sort=account_number:asc&amp;pretty</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search?q=*&amp;sort=age:desc</span><br></pre></td></tr></table></figure>
+
+<p>或者使用以下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;age&quot;: &quot;desc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 5,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 3,</span><br><span class="line">    &quot;max_score&quot;: null,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;shenchi&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;3&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: &quot;3&quot;,</span><br><span class="line">          &quot;age&quot;: 22,</span><br><span class="line">          &quot;desc&quot;: &quot;yes up&quot;,</span><br><span class="line">          &quot;tages&quot;: [</span><br><span class="line">            &quot;eat&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          22</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;shenchi&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: &quot;2&quot;,</span><br><span class="line">          &quot;age&quot;: 21,</span><br><span class="line">          &quot;desc&quot;: &quot;sad&quot;,</span><br><span class="line">          &quot;tages&quot;: [</span><br><span class="line">            &quot;eat&quot;,</span><br><span class="line">            &quot;read&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          21</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;shenchi&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: &quot;1&quot;,</span><br><span class="line">          &quot;age&quot;: 20,</span><br><span class="line">          &quot;desc&quot;: &quot;happy&quot;,</span><br><span class="line">          &quot;tages&quot;: [</span><br><span class="line">            &quot;see&quot;,</span><br><span class="line">            &quot;eat&quot;,</span><br><span class="line">            &quot;read&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          20</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="花式查询"><a href="#花式查询" class="headerlink" title="花式查询"></a>花式查询</h2><h3 id="match"><a href="#match" class="headerlink" title="match"></a>match</h3><p><code>match</code>查询用于全文本搜索，类似于模糊查询。它会对查询词进行分词，然后搜索分词后的每个词。具体来说，它会根据分析器（analyzer）的定义来处理文本，这通常包括将文本转换为小写、去除停用词（如“the”、“and”等）以及对文本进行分词。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;沈池&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果是数组的话，例如上面数据的tages，可以直接用空格多个查</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;tages&quot;: &quot;read se&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_source&quot;: [&quot;name&quot;,&quot;tages&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="source"><a href="#source" class="headerlink" title="source"></a>source</h3><p>只查询想要的字段，默认是全部查询，注意是要给一个<strong>列表</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;沈池&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_source&quot;: [&quot;name&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;沈池&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>from</strong>：起始点 </p>
+<p><strong>size</strong>：查询多少个</p>
+<h3 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h3><p><code>bool</code>查询是一个复合查询，它允许组合多个查询条件（子查询）。通过<code>bool</code>查询，你可以构建复杂的查询逻辑，包括必须匹配的条件（<code>must</code>）、应该匹配的条件（<code>should</code>）、必须不匹配的条件（<code>must_not</code>）和过滤条件（<code>filter</code>）</p>
+<ul>
+<li>必须匹配<strong>must</strong>，全部为真</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;name&quot;: &quot;沈池&quot;&#125;&#125;,</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;age&quot;: 22&#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>应该匹配<strong>should</strong>，一个为真即可</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;should&quot;: [</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;name&quot;: &quot;沈池&quot;&#125;&#125;,</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;age&quot;: 25&#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>必须不匹配<strong>must_not</strong>，全部为假</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must_not&quot;: [</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;name&quot;: &quot;沈池&quot;&#125;&#125;,</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;age&quot;: 25&#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>过滤<strong>filter</strong>，必须为真</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;name&quot;: &quot;沈池&quot;&#125;&#125;,</span><br><span class="line">        &#123;&quot;match&quot;: &#123;&quot;age&quot;: 22&#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用过滤器指定年龄范围：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GET /shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;range&quot;: &#123;</span><br><span class="line">          &quot;age&quot;: &#123;</span><br><span class="line">            &quot;gte&quot;: 18,</span><br><span class="line">            &quot;lte&quot;: 20</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>gte大于等于，gt大于</p>
+<p>lte小于等于，lt小于</p>
+</blockquote>
+<p><strong>must和filter的区别：</strong></p>
+<blockquote>
+<p><code>must</code> 子句</p>
+<ul>
+<li>影响相关性评分**：<code>must</code>子句中的查询条件会影响文档的相关性评分。文档必须匹配所有的<code>must</code>子句，匹配的文档将被返回，并且它们的相关性评分将根据这些查询条件进行计算和调整。</li>
+<li><strong>适用于</strong>：需要文档符合特定条件，并且希望这些条件对文档的相关性评分产生影响的情况。</li>
+</ul>
+<p><code>filter</code> 子句</p>
+<ul>
+<li><strong>不影响相关性评分</strong>：<code>filter</code>子句中的查询条件不影响文档的相关性评分。文档必须匹配所有的<code>filter</code>子句，但这些子句不会对文档的相关性评分进行调整。</li>
+<li><strong>适用于</strong>：需要文档符合特定条件，但不希望这些条件影响文档的相关性评分的情况。过滤条件通常用于常规过滤、预过滤或缓存，以提高查询性能</li>
+</ul>
+</blockquote>
+<h3 id="精确查询"><a href="#精确查询" class="headerlink" title="精确查询"></a>精确查询</h3><p>精确查询用到了倒排索引</p>
+<ul>
+<li>term，直接查询精确</li>
+<li>match会使用分词器，进行模糊查询</li>
+</ul>
+<blockquote>
+<p>text会被分词器解析，而keyword不会被分词器解析</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">GET shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;should&quot;: [</span><br><span class="line">        &#123;&quot;term&quot;: &#123;&quot;desc&quot;: &quot;yes&quot;&#125;&#125;,</span><br><span class="line">        &#123;&quot;term&quot;: &#123;&quot;desc&quot;: &quot;sad&quot;&#125;&#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="高亮查询"><a href="#高亮查询" class="headerlink" title="高亮查询"></a>高亮查询</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET shenchi/user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;沈池&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;highlight&quot;: &#123;</span><br><span class="line">    &quot;fields&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 83,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;max_score&quot;: 1.1508858,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;shenchi&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;4&quot;,</span><br><span class="line">        &quot;_score&quot;: 1.1508858,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: &quot;沈池111&quot;,</span><br><span class="line">          &quot;age&quot;: 23,</span><br><span class="line">          &quot;desc&quot;: &quot;yesup&quot;,</span><br><span class="line">          &quot;tages&quot;: [</span><br><span class="line">            &quot;eat&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;highlight&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: [</span><br><span class="line">            &quot;&lt;em&gt;沈&lt;/em&gt;&lt;em&gt;池&lt;/em&gt;111&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;shenchi&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;user&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;3&quot;,</span><br><span class="line">        &quot;_score&quot;: 0.5753642,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: &quot;沈池&quot;,</span><br><span class="line">          &quot;age&quot;: 22,</span><br><span class="line">          &quot;desc&quot;: &quot;yesup&quot;,</span><br><span class="line">          &quot;tages&quot;: [</span><br><span class="line">            &quot;eat&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;highlight&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: [</span><br><span class="line">            &quot;&lt;em&gt;沈&lt;/em&gt;&lt;em&gt;池&lt;/em&gt;&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>高亮的地方会加一个**<em></em>**标签</p>
+<p>并且可以添加两个属性<strong>自定义高亮</strong></p>
+<p>“pre_tags”: “<p>“</p>
+<p>“post_tags”: “</p>“</p>
+</blockquote>
+<h1 id="java项目集成"><a href="#java项目集成" class="headerlink" title="java项目集成"></a>java项目集成</h1><p>参考网址</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/client/java-api/6.3/transport-client.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api/6.3/transport-client.html</a></p>
+<p>使用的是Elasticsearch的Transport客户端</p>
+<blockquote>
+<ul>
+<li><strong>Transport客户端</strong>: 使用TCP通信，更高效但在最新的Elasticsearch版本中不再推荐使用。</li>
+<li><strong>REST高级客户端</strong>: 使用HTTP通信，更现代化和官方推荐，适合大多数应用场景。</li>
+</ul>
+<p>如果你使用Elasticsearch 6.x版本，Transport客户端是可以使用的，但是建议尽早迁移到REST客户端，因为它在未来的版本中会更加稳定和受支持。</p>
+</blockquote>
+<h2 id="maven添加依赖"><a href="#maven添加依赖" class="headerlink" title="maven添加依赖"></a>maven添加依赖</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>transport<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>任何主要版本（如测试版）的最初发布版本可能都是基于 Lucene Snapshot 版本构建的。在这种情况下，您将无法解析客户端的 Lucene 依赖项。</p>
+<p>例如，如果您要使用<code>6.0.0-beta1</code>依赖于 Lucene 的版本<code>7.0.0-snapshot-00142c9</code>，则必须定义以下存储库。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>elastic-lucene-snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Elastic Lucene Snapshots<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span>https://s3.amazonaws.com/download.elasticsearch.org/lucenesnapshots/00142c9<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">releases</span>&gt;</span><span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span><span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span><span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span><span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>还需要包括 Log4j 2 依赖项：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>并在类路径中提供一个 Log4j 2 配置文件。例如，您可以在<code>src/main/resources</code>项目目录中添加<code>log4j2.properties</code>如下文件：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">appender.console.type</span> = <span class="string">Console</span></span><br><span class="line"><span class="attr">appender.console.name</span> = <span class="string">console</span></span><br><span class="line"><span class="attr">appender.console.layout.type</span> = <span class="string">PatternLayout</span></span><br><span class="line"><span class="attr">appender.console.layout.pattern</span> = <span class="string">[%d&#123;ISO8601&#125;][%-5p][%-25c] %marker%m%n</span></span><br><span class="line"></span><br><span class="line"><span class="attr">rootLogger.level</span> = <span class="string">info</span></span><br><span class="line"><span class="attr">rootLogger.appenderRef.console.ref</span> = <span class="string">console</span></span><br></pre></td></tr></table></figure>
+
+<p>如果您想使用除 Log4j 2 之外的其他记录器，则可以使用<a target="_blank" rel="noopener" href="http://www.slf4j.org/">SLF4J</a>桥接器来执行此操作：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-to-slf4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.24<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>选择您最喜欢的记录器并将其添加为依赖项。作为示例，我们将使用<code>slf4j-simple</code>记录器：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-simple<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.21<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><ul>
+<li>基本客户端初始化和关闭</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// on startup</span></span><br><span class="line"></span><br><span class="line"><span class="type">TransportClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PreBuiltTransportClient</span>(Settings.EMPTY)</span><br><span class="line">        .addTransportAddress(<span class="keyword">new</span> <span class="title class_">TransportAddress</span>(InetAddress.getByName(<span class="string">&quot;host1&quot;</span>), <span class="number">9300</span>))</span><br><span class="line">        .addTransportAddress(<span class="keyword">new</span> <span class="title class_">TransportAddress</span>(InetAddress.getByName(<span class="string">&quot;host2&quot;</span>), <span class="number">9300</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// on shutdown</span></span><br><span class="line"></span><br><span class="line">client.close();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置集群名称的客户端</li>
+</ul>
+<p>使用与“elasticsearch”不同的集群名称，则必须设置集群名称：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Settings</span> <span class="variable">settings</span> <span class="operator">=</span> Settings.builder()</span><br><span class="line">        .put(<span class="string">&quot;cluster.name&quot;</span>, <span class="string">&quot;myClusterName&quot;</span>).build();</span><br><span class="line"><span class="type">TransportClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PreBuiltTransportClient</span>(settings);</span><br><span class="line"><span class="comment">//Add transport addresses and do something with the client...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启用嗅探功能的客户端</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Settings</span> <span class="variable">settings</span> <span class="operator">=</span> Settings.builder()</span><br><span class="line">        .put(<span class="string">&quot;client.transport.sniff&quot;</span>, <span class="literal">true</span>).build();</span><br><span class="line"><span class="type">TransportClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PreBuiltTransportClient</span>(settings);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><ul>
+<li>使用 <code>Settings.builder()</code> 创建一个 <code>Settings</code> 对象，并通过 <code>put</code> 方法设置 <code>client.transport.sniff</code> 为 <code>true</code>。</li>
+<li>创建一个 <code>TransportClient</code> 实例，使用上述配置。</li>
+<li>嗅探功能（sniffing）允许客户端在启动时自动发现集群中的所有节点，并将这些节点添加到客户端的内部节点列表中。</li>
+</ul>
+</li>
+</ul>
+<p>这个片段展示了如何启用嗅探功能，使客户端能够自动感知集群中的节点变化，提高连接的动态性和可靠性。</p>
+<h2 id="文档api"><a href="#文档api" class="headerlink" title="文档api"></a>文档api</h2><h3 id="创建索引以及文档"><a href="#创建索引以及文档" class="headerlink" title="创建索引以及文档"></a>创建索引以及文档</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.elasticsearch.common.xcontent.XContentFactory.*;</span><br><span class="line"><span class="comment">//使用了 jsonBuilder() 方法构建 JSON 格式的文档内容，其中field是添加字段</span></span><br><span class="line"><span class="type">IndexResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.prepareIndex(<span class="string">&quot;twitter&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">        .setSource(jsonBuilder()</span><br><span class="line">                    .startObject()</span><br><span class="line">                        .field(<span class="string">&quot;user&quot;</span>, <span class="string">&quot;kimchy&quot;</span>)</span><br><span class="line">                        .field(<span class="string">&quot;postDate&quot;</span>, <span class="keyword">new</span> <span class="title class_">Date</span>())</span><br><span class="line">                        .field(<span class="string">&quot;message&quot;</span>, <span class="string">&quot;trying out Elasticsearch&quot;</span>)</span><br><span class="line">                    .endObject()</span><br><span class="line">                  )</span><br><span class="line">        .get();</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取文档"><a href="#获取文档" class="headerlink" title="获取文档"></a>获取文档</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">GetResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.prepareGet(<span class="string">&quot;twitter&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;1&quot;</span>).get();</span><br></pre></td></tr></table></figure>
+
+<p><code>client.prepareGet</code>是 Elasticsearch Transport 客户端的一个方法，用于准备一个获取（GET）请求。</p>
+<h3 id="删除文档"><a href="#删除文档" class="headerlink" title="删除文档"></a>删除文档</h3><ul>
+<li>指定删除</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DeleteResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.prepareDelete(<span class="string">&quot;twitter&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;1&quot;</span>).get();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>按查询删除</p>
+<ul>
+<li>同步</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BulkByScrollResponse</span> <span class="variable">response</span> <span class="operator">=</span> DeleteByQueryAction.INSTANCE.newRequestBuilder(client)</span><br><span class="line">    .filter(QueryBuilders.matchQuery(<span class="string">&quot;gender&quot;</span>, <span class="string">&quot;male&quot;</span>)) </span><br><span class="line">    .source(<span class="string">&quot;persons&quot;</span>)                                  </span><br><span class="line">    .get();                                             </span><br><span class="line"><span class="type">long</span> <span class="variable">deleted</span> <span class="operator">=</span> response.getDeleted();</span><br></pre></td></tr></table></figure>
+
+<p><code>BulkByScrollResponse</code> 是 Elasticsearch 的响应对象，包含删除操作的详细信息，如删除的文档数量。</p>
+<p><code>get()</code>同步执行 Delete By Query 请求，并返回 <code>BulkByScrollResponse</code> 对象。这个方法会阻塞当前线程，直到操作完成。</p>
+<ul>
+<li>异步</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DeleteByQueryAction.INSTANCE.newRequestBuilder(client)</span><br><span class="line">    .filter(QueryBuilders.matchQuery(<span class="string">&quot;gender&quot;</span>, <span class="string">&quot;male&quot;</span>))     </span><br><span class="line">    .source(<span class="string">&quot;persons&quot;</span>)                                      </span><br><span class="line">    .execute(<span class="keyword">new</span> <span class="title class_">ActionListener</span>&lt;BulkByScrollResponse&gt;() &#123;   </span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onResponse</span><span class="params">(BulkByScrollResponse response)</span> &#123;</span><br><span class="line">            <span class="type">long</span> <span class="variable">deleted</span> <span class="operator">=</span> response.getDeleted();           </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(Exception e)</span> &#123;</span><br><span class="line">            <span class="comment">// Handle the exception</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>.execute(new ActionListener&lt;BulkByScrollResponse&gt;() &#123; ... &#125;)</code>异步执行 Delete By Query 请求，并使用 <code>ActionListener</code> 接口处理响应和可能的异常。</p>
+<p><code>onResponse(BulkByScrollResponse response)</code>当请求成功时调用。</p>
+<p><code>onFailure(Exception e)</code>当请求失败时调用。</p>
+</li>
+</ul>
+<h3 id="更新文档"><a href="#更新文档" class="headerlink" title="更新文档"></a>更新文档</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">IndexRequest</span> <span class="variable">indexRequest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IndexRequest</span>(<span class="string">&quot;index&quot;</span>, <span class="string">&quot;type&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">        .source(jsonBuilder()</span><br><span class="line">            .startObject()</span><br><span class="line">                .field(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;Joe Smith&quot;</span>)</span><br><span class="line">                .field(<span class="string">&quot;gender&quot;</span>, <span class="string">&quot;male&quot;</span>)</span><br><span class="line">            .endObject());</span><br><span class="line"><span class="type">UpdateRequest</span> <span class="variable">updateRequest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UpdateRequest</span>(<span class="string">&quot;index&quot;</span>, <span class="string">&quot;type&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">        .doc(jsonBuilder()</span><br><span class="line">            .startObject()</span><br><span class="line">                .field(<span class="string">&quot;gender&quot;</span>, <span class="string">&quot;male&quot;</span>)</span><br><span class="line">            .endObject())</span><br><span class="line">        .upsert(indexRequest);              </span><br><span class="line">client.update(updateRequest).get();</span><br></pre></td></tr></table></figure>
+
+<h3 id="多项获取"><a href="#多项获取" class="headerlink" title="多项获取"></a>多项获取</h3><p>进行多文档获取（Multi Get）操作，通过 <code>prepareMultiGet</code> 方法，可以一次性获取多个索引中的多个文档</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">MultiGetResponse</span> <span class="variable">multiGetItemResponses</span> <span class="operator">=</span> client.prepareMultiGet()</span><br><span class="line">    .add(<span class="string">&quot;twitter&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;1&quot;</span>)            </span><br><span class="line">    .add(<span class="string">&quot;twitter&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;4&quot;</span>)  </span><br><span class="line">    .add(<span class="string">&quot;another&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;foo&quot;</span>)          </span><br><span class="line">    .get();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (MultiGetItemResponse itemResponse : multiGetItemResponses) &#123; </span><br><span class="line">    <span class="type">GetResponse</span> <span class="variable">response</span> <span class="operator">=</span> itemResponse.getResponse();</span><br><span class="line">    <span class="keyword">if</span> (response.isExists()) &#123;                      </span><br><span class="line">        <span class="type">String</span> <span class="variable">json</span> <span class="operator">=</span> response.getSourceAsString(); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>response.getSourceAsString()</code>如果文档存在，获取文档内容的 JSON 字符串表示。</p>
+<h3 id="批量api"><a href="#批量api" class="headerlink" title="批量api"></a>批量api</h3><p> Elasticsearch 的 Transport 客户端进行批量操作（Bulk Operation）。批量操作允许你在一次请求中执行多个索引、更新或删除操作。这可以<strong>提高性能</strong>，因为减少了与服务器的往返次数。</p>
+<ul>
+<li>批量增加</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.elasticsearch.common.xcontent.XContentFactory.*;</span><br><span class="line"></span><br><span class="line"><span class="type">BulkRequestBuilder</span> <span class="variable">bulkRequest</span> <span class="operator">=</span> client.prepareBulk();</span><br><span class="line"></span><br><span class="line"><span class="comment">// either use client#prepare, or use Requests# to directly build index/delete requests</span></span><br><span class="line">bulkRequest.add(client.prepareIndex(<span class="string">&quot;twitter&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">        .setSource(jsonBuilder()</span><br><span class="line">                    .startObject()</span><br><span class="line">                        .field(<span class="string">&quot;user&quot;</span>, <span class="string">&quot;kimchy&quot;</span>)</span><br><span class="line">                        .field(<span class="string">&quot;postDate&quot;</span>, <span class="keyword">new</span> <span class="title class_">Date</span>())</span><br><span class="line">                        .field(<span class="string">&quot;message&quot;</span>, <span class="string">&quot;trying out Elasticsearch&quot;</span>)</span><br><span class="line">                    .endObject()</span><br><span class="line">                  )</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">bulkRequest.add(client.prepareIndex(<span class="string">&quot;twitter&quot;</span>, <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;2&quot;</span>)</span><br><span class="line">        .setSource(jsonBuilder()</span><br><span class="line">                    .startObject()</span><br><span class="line">                        .field(<span class="string">&quot;user&quot;</span>, <span class="string">&quot;kimchy&quot;</span>)</span><br><span class="line">                        .field(<span class="string">&quot;postDate&quot;</span>, <span class="keyword">new</span> <span class="title class_">Date</span>())</span><br><span class="line">                        .field(<span class="string">&quot;message&quot;</span>, <span class="string">&quot;another post&quot;</span>)</span><br><span class="line">                    .endObject()</span><br><span class="line">                  )</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line"><span class="type">BulkResponse</span> <span class="variable">bulkResponse</span> <span class="operator">=</span> bulkRequest.get();</span><br><span class="line"><span class="keyword">if</span> (bulkResponse.hasFailures()) &#123;</span><br><span class="line">    <span class="comment">// process failures by iterating through each bulk response item</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>XContentFactory</code>这是一个帮助类，用于创建 JSON 内容构建器 (<code>XContentBuilder</code>)</p>
+<p><code>client.prepareBulk()</code>创建一个 <code>BulkRequestBuilder</code> 对象，用于构建一个批量请求</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/05/20/%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">八股文——设计模式篇</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/05/20</li>
+                <li>01:20</li>
+                <li>学习笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="概述与安装"><a rel="nofollow" class="trm-toc-link" href="#概述与安装"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">概述与安装</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="安装elasticsearch-6.3.2"><a rel="nofollow" class="trm-toc-link" href="#安装elasticsearch-6-3-2"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">安装elasticsearch-6.3.2</span></a></li><li class="trm-toc-item trm-toc-level-2" title="安装可视化界面kibana-6.3.2"><a rel="nofollow" class="trm-toc-link" href="#安装可视化界面kibana-6-3-2"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">安装可视化界面kibana-6.3.2</span></a></li><li class="trm-toc-item trm-toc-level-2" title="集群(Cluster)"><a rel="nofollow" class="trm-toc-link" href="#集群-Cluster"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">集群(Cluster)</span></a></li><li class="trm-toc-item trm-toc-level-2" title="节点(Node)"><a rel="nofollow" class="trm-toc-link" href="#节点-Node"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text">节点(Node)</span></a></li><li class="trm-toc-item trm-toc-level-2" title="索引(Index)"><a rel="nofollow" class="trm-toc-link" href="#索引-Index"><span class="trm-toc-number">1.5.</span> <span class="trm-toc-text">索引(Index)</span></a></li><li class="trm-toc-item trm-toc-level-2" title="文档(Document)"><a rel="nofollow" class="trm-toc-link" href="#文档-Document"><span class="trm-toc-number">1.6.</span> <span class="trm-toc-text">文档(Document)</span></a></li><li class="trm-toc-item trm-toc-level-2" title="类型(Type,新版已弃用)"><a rel="nofollow" class="trm-toc-link" href="#类型-Type-新版已弃用"><span class="trm-toc-number">1.7.</span> <span class="trm-toc-text">类型(Type,新版已弃用)</span></a></li><li class="trm-toc-item trm-toc-level-2" title="分析器 (Analyzer)"><a rel="nofollow" class="trm-toc-link" href="#分析器-Analyzer"><span class="trm-toc-number">1.8.</span> <span class="trm-toc-text">分析器 (Analyzer)</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="IK分词器"><a rel="nofollow" class="trm-toc-link" href="#IK分词器"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">IK分词器</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="下载、解压、简单使用"><a rel="nofollow" class="trm-toc-link" href="#下载、解压、简单使用"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">下载、解压、简单使用</span></a></li><li class="trm-toc-item trm-toc-level-2" title="ik分词器增加自己的配置"><a rel="nofollow" class="trm-toc-link" href="#ik分词器增加自己的配置"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">ik分词器增加自己的配置</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="Rest风格"><a rel="nofollow" class="trm-toc-link" href="#Rest风格"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">Rest风格</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="创建索引"><a rel="nofollow" class="trm-toc-link" href="#创建索引"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">创建索引</span></a></li><li class="trm-toc-item trm-toc-level-2" title="查看集群健康状态"><a rel="nofollow" class="trm-toc-link" href="#查看集群健康状态"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">查看集群健康状态</span></a></li><li class="trm-toc-item trm-toc-level-2" title="查看有多少个索引库"><a rel="nofollow" class="trm-toc-link" href="#查看有多少个索引库"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text">查看有多少个索引库</span></a></li><li class="trm-toc-item trm-toc-level-2" title="节点列表"><a rel="nofollow" class="trm-toc-link" href="#节点列表"><span class="trm-toc-number">3.4.</span> <span class="trm-toc-text">节点列表</span></a></li><li class="trm-toc-item trm-toc-level-2" title="修改文档"><a rel="nofollow" class="trm-toc-link" href="#修改文档"><span class="trm-toc-number">3.5.</span> <span class="trm-toc-text">修改文档</span></a></li><li class="trm-toc-item trm-toc-level-2" title="删除索引、文档"><a rel="nofollow" class="trm-toc-link" href="#删除索引、文档"><span class="trm-toc-number">3.6.</span> <span class="trm-toc-text">删除索引、文档</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="文档基本操作"><a rel="nofollow" class="trm-toc-link" href="#文档基本操作"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">文档基本操作</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="基本查询"><a rel="nofollow" class="trm-toc-link" href="#基本查询"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">基本查询</span></a></li><li class="trm-toc-item trm-toc-level-2" title="花式查询"><a rel="nofollow" class="trm-toc-link" href="#花式查询"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">花式查询</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="match"><a rel="nofollow" class="trm-toc-link" href="#match"><span class="trm-toc-number">4.2.1.</span> <span class="trm-toc-text">match</span></a></li><li class="trm-toc-item trm-toc-level-3" title="source"><a rel="nofollow" class="trm-toc-link" href="#source"><span class="trm-toc-number">4.2.2.</span> <span class="trm-toc-text">source</span></a></li><li class="trm-toc-item trm-toc-level-3" title="分页"><a rel="nofollow" class="trm-toc-link" href="#分页"><span class="trm-toc-number">4.2.3.</span> <span class="trm-toc-text">分页</span></a></li><li class="trm-toc-item trm-toc-level-3" title="布尔值"><a rel="nofollow" class="trm-toc-link" href="#布尔值"><span class="trm-toc-number">4.2.4.</span> <span class="trm-toc-text">布尔值</span></a></li><li class="trm-toc-item trm-toc-level-3" title="精确查询"><a rel="nofollow" class="trm-toc-link" href="#精确查询"><span class="trm-toc-number">4.2.5.</span> <span class="trm-toc-text">精确查询</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="高亮查询"><a rel="nofollow" class="trm-toc-link" href="#高亮查询"><span class="trm-toc-number">4.3.</span> <span class="trm-toc-text">高亮查询</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="java项目集成"><a rel="nofollow" class="trm-toc-link" href="#java项目集成"><span class="trm-toc-number">5.</span> <span class="trm-toc-text">java项目集成</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="maven添加依赖"><a rel="nofollow" class="trm-toc-link" href="#maven添加依赖"><span class="trm-toc-number">5.1.</span> <span class="trm-toc-text">maven添加依赖</span></a></li><li class="trm-toc-item trm-toc-level-2" title="初始化"><a rel="nofollow" class="trm-toc-link" href="#初始化"><span class="trm-toc-number">5.2.</span> <span class="trm-toc-text">初始化</span></a></li><li class="trm-toc-item trm-toc-level-2" title="文档api"><a rel="nofollow" class="trm-toc-link" href="#文档api"><span class="trm-toc-number">5.3.</span> <span class="trm-toc-text">文档api</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="创建索引以及文档"><a rel="nofollow" class="trm-toc-link" href="#创建索引以及文档"><span class="trm-toc-number">5.3.1.</span> <span class="trm-toc-text">创建索引以及文档</span></a></li><li class="trm-toc-item trm-toc-level-3" title="获取文档"><a rel="nofollow" class="trm-toc-link" href="#获取文档"><span class="trm-toc-number">5.3.2.</span> <span class="trm-toc-text">获取文档</span></a></li><li class="trm-toc-item trm-toc-level-3" title="删除文档"><a rel="nofollow" class="trm-toc-link" href="#删除文档"><span class="trm-toc-number">5.3.3.</span> <span class="trm-toc-text">删除文档</span></a></li><li class="trm-toc-item trm-toc-level-3" title="更新文档"><a rel="nofollow" class="trm-toc-link" href="#更新文档"><span class="trm-toc-number">5.3.4.</span> <span class="trm-toc-text">更新文档</span></a></li><li class="trm-toc-item trm-toc-level-3" title="多项获取"><a rel="nofollow" class="trm-toc-link" href="#多项获取"><span class="trm-toc-number">5.3.5.</span> <span class="trm-toc-text">多项获取</span></a></li><li class="trm-toc-item trm-toc-level-3" title="批量api"><a rel="nofollow" class="trm-toc-link" href="#批量api"><span class="trm-toc-number">5.3.6.</span> <span class="trm-toc-text">批量api</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.10"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.1.10"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.1.10"></script>
+
+</body>
+
+</html>
